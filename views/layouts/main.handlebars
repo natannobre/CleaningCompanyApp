@@ -1,14 +1,101 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CleaningSquad APP</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 5px;
+            margin-top: 25px;
+        }
+    </style>
 </head>
+
 <body>
     <script src="/js/bootstrap.js"></script>
+    {{#if usuario}}
+    <div class="container-fluid">
+        <div class="row content">
+            <div class="col-sm-3">
+                <div class="card mt-5">
+                    <h5 class="card-header">Featured</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="col-12 mt-4">
+                    <div class="list-group mx-auto" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-home-list"
+                            data-bs-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
+                            href="#list-profile" role="tab" aria-controls="profile">Profile</a>
+                        <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
+                            href="#list-messages" role="tab" aria-controls="messages">Messages</a>
+                        <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
+                            href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+                <h4 class="mt-3"><small>CLEANING SQUAD APP</small></h4>
+                <hr>
+                <h2>I Love Food</h2>
+                <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
+                <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5>
+                <br>
+                <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing
+                    elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <br><br>
+
+                <h4><small>RECENT POSTS</small></h4>
+                <hr>
+                <h2>Officially Blogging</h2>
+                <h5><span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.</h5>
+                <h5><span class="label label-success">Lorem</span></h5><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut
+                    aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                    qui
+                    officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <hr>
+
+                <h4>Leave a Comment:</h4>
+                <form role="form">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <h4 align="center">&copy; App desenvolvido pela empresa NIAR</h4>
+    </footer>
+    {{else}}
     {{{body}}}
+    {{/if}}
 </body>
+
 </html>

@@ -15,6 +15,11 @@ app.set('view engine', 'handlebars');
 //Public
 app.use(express.static(path.join(__dirname, "public")))
 
+app.use((req, res, next) => {
+    res.locals.usuario = true;
+    next();
+})
+
 const port = 8888;
 const host = "localhost"
 
