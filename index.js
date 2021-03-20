@@ -32,6 +32,10 @@ app.get("/login", (req, res) => {
     res.render("login");
 })
 
+app.get("/home", (req, res) => {
+    res.render("home");
+})
+
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);
 })
