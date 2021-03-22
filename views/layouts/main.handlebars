@@ -15,8 +15,6 @@
             padding: 5px;
             margin-top: 25px;
         }
-
-
     </style>
 
 </head>
@@ -48,35 +46,48 @@
                     </div>
 
                 </div>
+                
                 <div class="col-12 mt-4">
                     <div class="list-group mx-auto" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active" id="list-home-list"
-                            data-bs-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
-                            href="#list-profile" role="tab" aria-controls="profile">Novo Funcionário</a>
+                        <a class="list-group-item list-group-item-action  active " id="list-home-list"
+                            data-bs-toggle="list" href="#list-home" role="tab" aria-controls="home"> <img class="mb-2"
+                                src="/img/home-run.png" alt=""> Home</a>
+                        <a class="list-group-item list-group-item-action" id="list-novoFuncionario-list" data-bs-toggle="list"
+                            href="#list-novoFuncionario" role="tab" aria-controls="novoFuncionario"> <img class="mb-2"
+                                src="/img/add-user.png" alt=""> Novo Funcionário</a>
                         <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
-                            href="#list-messages" role="tab" aria-controls="messages">Buscar Funcionário</a>
+                            href="#list-messages" role="tab" aria-controls="messages"> <img class="mb-2"
+                                src="/img/search.png" alt=""> Buscar Funcionário</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Novo Cliente</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/add.png" alt=""> Novo Cliente</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Buscar Cliente</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/search-client.png" alt=""> Buscar Cliente</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Novo Pedido</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/house-cleaning.png" alt=""> Novo Pedido</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Pedidos do dia</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/search.png" alt=""> Pedidos do dia</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Buscar Pedido</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/search.png" alt=""> Buscar Pedido</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Nova Receita</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/dinheiro.png" alt=""> Nova Receita</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Caixa do dia</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/search.png" alt=""> Caixa do dia</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list"
-                            href="#list-settings" role="tab" aria-controls="settings">Buscar Caixa</a>
+                            href="#list-settings" role="tab" aria-controls="settings"> <img class="mb-2"
+                                src="/img/search.png" alt=""> Buscar Caixa</a>
+
                     </div>
                 </div>
             </div>
             <div class="col-sm-9">
-                <h4 class="mt-3 bg-info" align="center">
+                <h4 class="mt-3 text-white bg-info" align="center">
                     <img src="/img/household.png" alt="" width="30px" height="30px">
                     <small>CLEANING SQUAD APP</small>
                 </h4>
@@ -91,7 +102,7 @@
         <h4 align="center">&copy; App desenvolvido pela empresa NIAR</h4>
     </footer>
     {{else}}
-        {{{body}}}
+    {{{body}}}
     {{/if}}
 </body>
 
