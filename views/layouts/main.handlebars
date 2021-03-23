@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleaningSquad APP</title>
+    <title>CleaningCompany APP</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <style>
         footer {
             background-color: #555;
@@ -15,6 +16,7 @@
             padding: 5px;
             margin-top: 25px;
         }
+
     </style>
 
 </head>
@@ -46,15 +48,13 @@
                     </div>
 
                 </div>
-                
+
                 <div class="col-12 mt-4">
                     <div class="list-group mx-auto" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active " id="list-home-list"
-                            data-bs-toggle="list" href="#list-home" role="tab" aria-controls="home"> <img class="mb-2"
+                        <a class="list-group-item list-group-item-action active" id="home" href="/home"> <img class="mb-2"
                                 src="/img/home-run.png" alt=""> Home</a>
-                        <a class="list-group-item list-group-item-action" id="list-novoFuncionario-list" data-bs-toggle="list"
-                            href="#list-novoFuncionario" role="tab" aria-controls="novoFuncionario"> <img class="mb-2"
-                                src="/img/add-user.png" alt=""> Novo Funcionário</a>
+                        <a class="list-group-item list-group-item-action" id="novoFuncionario"  href="/funcionario/add_funcionario">
+                            <img class="mb-2" src="/img/add-user.png" alt=""> Novo Funcionário</a>
                         <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
                             href="#list-messages" role="tab" aria-controls="messages"> <img class="mb-2"
                                 src="/img/search.png" alt=""> Buscar Funcionário</a>
@@ -89,11 +89,11 @@
             <div class="col-sm-9">
                 <h4 class="mt-3 text-white bg-info" align="center">
                     <img src="/img/household.png" alt="" width="30px" height="30px">
-                    <small>CLEANING SQUAD APP</small>
+                    <small>CLEANING COMPANY APP</small>
                 </h4>
                 <hr>
                 {{{body}}}
-                <hr>
+
             </div>
         </div>
     </div>

@@ -36,6 +36,10 @@ app.get("/home", (req, res) => {
     res.render("home");
 })
 
+app.get("/funcionario/add_funcionario", (req, res) => {
+    res.render("funcionario/add_funcionario");
+})
+
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);
 })

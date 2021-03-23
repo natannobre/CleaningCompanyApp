@@ -1,0 +1,54 @@
+<script>
+  var elementoAtivo = document.getElementsByClassName("active");
+  elementoAtivo[0].classList.remove('active');
+  var elemento = document.getElementById("novoFuncionario");
+  elemento.classList.add("active");
+</script>
+
+<div class="card">
+
+  <div class="card-header text-white" style="background-color:lightslategray">
+      <div class="row g-3">
+        <div class="col-1">
+          <img class="rounded mx-auto d-block" src="/img/add-user2.png" width="60px" heigth="60px" alt="">
+        </div>
+        <div class="col-11 mt-4">
+          <h1>Novo Funcionário</h1>
+        </div>
+      </div>
+  </div>
+  <div class="card-body bg-info">
+    <form>
+      <div class="mb-3">
+        <label for="nomeUsuario" class="form-label">Nome de Usuário</label>
+        <input type="text" class="form-control" name="nomeUsuario" id="nomeUsuario" aria-describedby="nomeUsuario">
+      </div>
+      <div class="mb-3">
+        <label for="senhaUsuario" class="form-label">Senha</label>
+        <input type="password" class="form-control" name="senhaUsuario" id="senhaUsuario"
+          aria-describedby="senhaUsuario">
+        <div class="mb-3 mt-3">
+          <label for="primeiroNome" class="form-label">Primeiro Nome</label>
+          <input type="text" class="form-control" name="primeiroNome" id="primeiroNome">
+        </div>
+        <div class="mb-3">
+          <label for="ultimoNome" class="form-label">Último Nome</label>
+          <input type="text" class="form-control" name="ultimoNome" id="ultimoNome">
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label for="SSN" class="form-label">SSN</label>
+            <input type="text" class="form-control" id="SSN" name="ssn">
+          </div>
+          <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input type="text" class="form-control" id="telefone" name="telefone">
+          </div>
+        </div>
+        <div align="center">
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+          <button type="reset" class="btn btn-primary">Limpar</button>
+        </div>
+    </form>
+  </div>
+</div>
