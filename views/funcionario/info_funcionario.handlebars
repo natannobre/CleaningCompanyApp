@@ -1,0 +1,50 @@
+<script>
+    var elementoAtivo = document.getElementsByClassName("active");
+    elementoAtivo[0].classList.remove('active');
+    var elemento = document.getElementById("buscarFuncionario");
+    elemento.classList.add("active");
+</script>
+
+<div class="card">
+
+    <div class="card-header text-white" style="background-color:lightslategray">
+        <div class="row g-3">
+            <div class="col-1">
+                <img class="rounded mx-auto d-block" src="/img/info2.png" width="60px" heigth="60px" alt="">
+            </div>
+            <div class="col-11 mt-4">
+                <h1>Informações do Funcionário</h1>
+            </div>
+        </div>
+    </div>
+    <div class="card-body bg-info">
+        <form>
+            <div class="mb-3">
+                <label for="user_name" class="form-label">Nome de Usuário</label>
+                <input type="text" class="form-control" value="{{funcionario.user_name}}" readonly="true" name="user_name" id="user_name"
+                    aria-describedby="user_name">
+            </div>
+            <div class="mb-3">
+                <label for="first_name" class="form-label">Primeiro Nome</label>
+                <input type="text" readonly="true" value="{{funcionario.first_name}}" class="form-control" name="first_name" id="first_name">
+            </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Último Nome</label>
+                <input type="text" readonly="true" class="form-control" readonly="true" value="{{funcionario.last_name}}" name="last_name" id="last_name">
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="SSN" class="form-label">SSN</label>
+                    <input type="text" readonly="true" class="form-control" id="SSN" name="ssn" value="{{funcionario.ssn}}">
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Telefone</label>
+                    <input type="text" readonly="true" class="form-control" id="phone" name="phone" value="{{funcionario.phone}}">
+                </div>
+            </div>
+            <div align="center">
+                <button type="button" class="btn btn-primary" onclick="location.href = document.referrer;">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>

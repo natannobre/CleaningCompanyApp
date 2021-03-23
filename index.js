@@ -40,6 +40,45 @@ app.get("/funcionario/add_funcionario", (req, res) => {
     res.render("funcionario/add_funcionario");
 })
 
+app.get("/funcionario/busca_funcionario", (req, res) => {
+    res.render("funcionario/busca_funcionario");
+})
+
+app.get("/funcionario/busca_funcionario/:busca", (req, res) => {
+    funcionarios = [];
+    novoFuncionario = {
+        first_name: "Pessoa",
+        last_name: "da Terra",
+        user_name: "pessoadaterra",
+        phone: "(88) 99999-9999",
+        SSN: "123456789"
+    }
+    funcionarios.push(novoFuncionario)
+    res.render("funcionario/busca_funcionario", {funcionarios: funcionarios});
+})
+
+app.get("/funcionario/info_funcionario/:id", (req, res) => {
+    novoFuncionario = {
+        first_name: "Pessoa",
+        last_name: "da Terra",
+        user_name: "pessoadaterra",
+        phone: "(88) 99999-9999",
+        ssn: "123456789"
+    }
+    res.render("funcionario/info_funcionario", {funcionario: novoFuncionario})
+})
+
+app.get("/funcionario/edit_funcionario/:id", (req, res) => {
+    novoFuncionario = {
+        first_name: "Pessoa",
+        last_name: "da Terra",
+        user_name: "pessoadaterra",
+        phone: "(88) 99999-9999",
+        ssn: "123456789"
+    }
+    res.render("funcionario/edit_funcionario", {funcionario: novoFuncionario})
+})
+
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);
 })
