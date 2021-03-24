@@ -139,6 +139,63 @@ app.get("/contrato/add_contrato", (req, res) => {
     res.render("contrato/add_contrato", {clientes: clientes});
 })
 
+app.get("/contrato/busca_contrato", (req, res) => {
+    res.render("contrato/busca_contrato");
+})
+
+app.get("/contrato/busca_contrato/:busca", (req, res) => {
+    contratos = [];
+    novoContrato = {
+        client: "Ruan Felipe de Almeida",
+        price: "180,00",
+        expiration: "10/12/2021",
+        type: "Mensal",
+        street: "Pineda Cosway",
+        number: "105A",
+        neighborhood: "Pioneer Drive",
+        zip:"32926",
+        city:"Vieira",
+        state:"Florida",
+        phone: "(88) 99999-9999"
+    }
+    contratos.push(novoContrato)
+    res.render("contrato/busca_contrato", {contratos: contratos});
+})
+
+app.get("/contrato/info_contrato/:id", (req, res) => {
+    novoContrato = {
+        client: "Ruan Felipe de Almeida",
+        price: "180,00",
+        expiration: "10/12/2021",
+        type: "Mensal",
+        street: "Pineda Cosway",
+        number: "105A",
+        neighborhood: "Pioneer Drive",
+        zip:"32926",
+        city:"Vieira",
+        state:"Florida",
+        phone: "(88) 99999-9999"
+    }
+    res.render("contrato/info_contrato", {contrato: novoContrato})
+})
+
+app.get("/contrato/edit_contrato/:id", (req, res) => {
+    novoContrato = {
+        client: "Ruan Felipe de Almeida",
+        price: "180,00",
+        expiration: "10/12/2021",
+        type: "Mensal",
+        street: "Pineda Cosway",
+        number: "105A",
+        neighborhood: "Pioneer Drive",
+        zip:"32926",
+        city:"Vieira",
+        state:"Florida",
+        phone: "(88) 99999-9999"
+    }
+    res.render("contrato/edit_contrato", {contrato: novoContrato})
+})
+
 app.get("/receita/add_receita", (req, res) => {
     res.render("receita/add_receita");
 })
