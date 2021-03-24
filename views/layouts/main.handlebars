@@ -35,13 +35,13 @@
                                 <img src="/img/usuarios2.png" width="80px" height="80px" alt="">
                             </div>
                             <div class="col-md-8">
-                                <h5 class="card-title"> <b>Nome:</b> Natan Nobre</h5>
+                                <h5 class="card-title"> <b>Nome:</b> {{usuario.first_name}} {{usuario.last_name}}</h5>
                                 <p class="card-text"><b>Tipo: </b> Administrador</p>
                             </div>
                         </div>
                         <div class="d-grid gap-2 d-md-flex mt-2 justify-content-md-end">
-                            <button class="btn btn-primary me-md-2" type="button"> <img src="/img/user-profile.png"
-                                    alt="" width="30px" height="30px"> Ver Perfil</button>
+                            <a href="/perfil"><button class="btn btn-primary me-md-2" type="button"> <img src="/img/user-profile.png"
+                                    alt="" width="30px" height="30px"> Ver Perfil</button></a>
                             <button class="btn btn-danger" type="button"> <img src="/img/logout.png" alt="" width="30px"
                                     height="30px"> Logout</button>
                         </div>
