@@ -79,6 +79,49 @@ app.get("/funcionario/edit_funcionario/:id", (req, res) => {
     res.render("funcionario/edit_funcionario", {funcionario: novoFuncionario})
 })
 
+app.get("/cliente/add_cliente", (req, res) => {
+    res.render("cliente/add_cliente");
+})
+
+app.get("/cliente/busca_cliente", (req, res) => {
+    res.render("cliente/busca_cliente");
+})
+
+app.get("/cliente/busca_cliente/:busca", (req, res) => {
+    clientes = [];
+    novoCliente = {
+        email: "Ruanfelipe903@alu.ufc.br",
+        first_name: "Ruan",
+        last_name: "Felipe",
+        phone: "(88) 99999-9999",
+        SSN: "123456789"
+    }
+    clientes.push(novoCliente)
+    res.render("cliente/busca_cliente", {clientes: clientes});
+})
+
+app.get("/cliente/info_cliente/:id", (req, res) => {
+    novoCliente = {
+        email: "Ruanfelipe903@alu.ufc.br",
+        first_name: "Ruan",
+        last_name: "Felipe",
+        phone: "(88) 99999-9999",
+        ssn: "123456789"
+    }
+    res.render("cliente/info_cliente", {cliente: novoCliente})
+})
+
+app.get("/cliente/edit_cliente/:id", (req, res) => {
+    novoCliente = {
+        email: "Ruanfelipe903@alu.ufc.br",
+        first_name: "Ruan",
+        last_name: "Felipe",
+        phone: "(88) 99999-9999",
+        ssn: "123456789"
+    }
+    res.render("cliente/edit_cliente", {cliente: novoCliente})
+})
+
 app.get("/contrato/add_contrato", (req, res) => {
     var clientes = [];
     var cliente1 = {
