@@ -219,6 +219,13 @@ app.get("/perfil", (req, res) => {
     res.render("perfil");
 })
 
+app.get('/logout', (req, res) => {
+    //req.logOut();
+    res.locals.usuario = false;
+    //req.flash("success_msg", "Deslogado do sistema")
+    res.redirect("/")
+})
+
 
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);

@@ -42,8 +42,8 @@
                         <div class="d-grid gap-2 d-md-flex mt-2 justify-content-md-end">
                             <a href="/perfil"><button class="btn btn-primary me-md-2" type="button"> <img src="/img/user-profile.png"
                                     alt="" width="30px" height="30px"> Ver Perfil</button></a>
-                            <button class="btn btn-danger" type="button"> <img src="/img/logout.png" alt="" width="30px"
-                                    height="30px"> Logout</button>
+                            <a href="/logout"><button class="btn btn-danger" type="button"> <img src="/img/logout.png" alt="" width="30px"
+                                    height="30px"> Logout</button></a>
                         </div>
                     </div>
 
@@ -86,6 +86,7 @@
                     <small>CLEANING COMPANY APP</small>
                 </h4>
                 <hr>
+                {{>_msg}}
                 {{{body}}}
 
             </div>
