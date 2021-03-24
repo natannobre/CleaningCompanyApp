@@ -1,0 +1,98 @@
+<script>
+  var elementoAtivo = document.getElementsByClassName("active");
+  elementoAtivo[0].classList.remove('active');
+  var elemento = document.getElementById("novoContrato");
+  elemento.classList.add("active");
+</script>
+
+
+<div class="card">
+
+  <div class="card-header text-white" style="background-color:lightslategray">
+    <div class="row g-3">
+      <div class="col-1">
+        <img class="rounded mx-auto d-block" src="/img/house-cleaning2.png" width="60px" heigth="60px" alt="">
+      </div>
+      <div class="col-11 mt-4">
+        <h1>Novo Contrato</h1>
+      </div>
+    </div>
+  </div>
+  <div class="card-body bg-info">
+    <form>
+      <div class="mb-3">
+        <label for="client" class="form-label">Cliente:</label>
+        <select required class="form-select" aria-label="Default select example">
+            <option disabled="true" selected="true">Selecione um cliente</option>
+            {{#each clientes}}
+                <option value="{{_id}}">{{first_name}} {{last_name}}</option>
+            {{else}}
+
+            {{/each}}
+        </select>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="contract_price" class="form-label">Preço do Contrato em R$</label>
+          <input type="number" class="form-control" id="contract_price" step="0.01" min="0.01" name="contract_price" required="true">
+        </div>
+        <div class="col-md-6">
+          <label for="validity" class="form-label">Validade do Contrato</label>
+          <input type="text" class="form-control" id="validity" name="validity" required="true">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="contract_type" class="form-label">Tipo do Contrato</label><br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="contract_type" id="semanal" value="semanal" required="true">
+            <label class="form-check-label" for="semanal">Semanal</label>
+            </div>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="contract_type" id="quinzenal" value="quinzenal" required="true">
+            <label class="form-check-label" for="quinzenal">Quinzenal</label>
+            </div>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="contract_type" id="mensal" value="mensal" required="true">
+            <label class="form-check-label" for="mensal">Mensal</label>
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="mb-3 col-10">
+            <label for="street" class="form-label">Rua</label>
+            <input type="text" class="form-control" name="street" id="street" required="true">
+        </div>
+        <div class="col-md-2">
+          <label for="number" class="form-label">Número</label>
+          <input type="number" class="form-control" id="number" name="number" required="true">
+        </div>
+      </div>
+      
+      <div class="row g-3 mb-3">
+        <div class="col-md-8 mb-3">
+            <label for="neighborhood" class="form-label">Bairro</label>
+            <input type="text" class="form-control" name="neighborhood" id="neighborhood" required="true">
+        </div>
+        <div class="col-md-4">
+          <label for="zipcode" class="form-label">Código Postal</label>
+          <input type="text" class="form-control" id="zipcode" name="zipcode" required="true">
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-8 mb-3">
+            <label for="city" class="form-label">Cidade</label>
+            <input type="text" class="form-control" name="city" id="city" required="true">
+        </div>
+        <div class="col-md-4">
+          <label for="sub_division" class="form-label">Estado</label>
+          <input type="text" class="form-control" id="sub_division" name="sub_division" required="true">
+        </div>
+      </div>
+
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button type="reset" class="ms-3 btn btn-primary">Limpar</button>
+      </div>
+    </form>
+  </div>
+</div>

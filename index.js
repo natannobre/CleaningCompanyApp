@@ -79,6 +79,23 @@ app.get("/funcionario/edit_funcionario/:id", (req, res) => {
     res.render("funcionario/edit_funcionario", {funcionario: novoFuncionario})
 })
 
+app.get("/contrato/add_contrato", (req, res) => {
+    var clientes = [];
+    var cliente1 = {
+        _id: 1,
+        first_name: "Natan",
+        last_name: "Nobre"
+    }
+    var cliente2 = {
+        _id: 2,
+        first_name: "Ruan",
+        last_name: "Felipe"
+    }
+    clientes.push(cliente1);
+    clientes.push(cliente2);
+    res.render("contrato/add_contrato", {clientes: clientes});
+})
+
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);
 })
