@@ -139,6 +139,10 @@ app.get("/contrato/add_contrato", (req, res) => {
     res.render("contrato/add_contrato", {clientes: clientes});
 })
 
+app.get("/receita/add_receita", (req, res) => {
+    res.render("receita/add_receita");
+})
+
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);
 })

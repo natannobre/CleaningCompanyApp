@@ -1,0 +1,39 @@
+<script>
+  var elementoAtivo = document.getElementsByClassName("active");
+  elementoAtivo[0].classList.remove('active');
+  var elemento = document.getElementById("novaReceita");
+  elemento.classList.add("active");
+</script>
+
+
+<div class="card">
+
+  <div class="card-header text-white" style="background-color:lightslategray">
+    <div class="row g-3">
+      <div class="col-1">
+        <img class="rounded mx-auto d-block" src="/img/newContract.png" width="60px" heigth="60px" alt="">
+      </div>
+      <div class="col-11 mt-4">
+        <h1>Nova Receita</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body bg-info">
+    <form>
+        <div class="mb-3">
+            <label for="value" class="form-label">Valor em R$</label>
+            <input type="value" class="form-control" id="value" placeholder="120,00 R$">
+        </div>
+        <div class="mb-3">
+            <label for="type" class="form-label">Tipo da Receita</label>
+            <input type="type" class="form-control" id="type" placeholder="Débito">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descrição</label>
+            <textarea class="form-control" id="description" rows="3"></textarea>
+        </div>
+    </form>
+  </div>
+
+</div>
