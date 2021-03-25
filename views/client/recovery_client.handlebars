@@ -19,13 +19,17 @@
     <div class="card-body">
         <form action="/client/recovery/search" method="GET">
             <div class="row g-3">
-                <div class="col">
+                <div class="col-sm-7">
                     <input type="text" name="first_name" class="form-control"
                         placeholder="Digite o nome para buscar entre os clientes">
                 </div>
-                <div class="col">
+                <div class="col-auto">
                     <button class="btn btn-primary" type="submit"> <img src="/img/search3.png" alt=""> Buscar
                         Cliente</button>
+                </div>
+                <div class="col-auto">
+                    <a href=""><button class="btn btn-primary" type="button"> <img src="/img/list2.png" alt=""> Listar
+                        Todos</button></a>
                 </div>
             </div>
         </form>

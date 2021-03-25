@@ -13,7 +13,8 @@ const passport = require('passport');
 
 const client = require("./routes/client");
 const employee = require("./routes/employee");
-
+const income = require("./routes/income");
+const cash_desk = require("./routes/cash_desk");
 
 
 function mascaraData(data) {
@@ -105,6 +106,8 @@ app.get("/home", (req, res) => {
 
 app.use("/client", client);
 app.use("/employee", employee);
+app.use("/income",  income);
+app.use("/cash_desk", cash_desk);
 
 
 app.get("/contrato/add_contrato", (req, res) => {
@@ -121,11 +124,11 @@ app.get("/contrato/add_contrato", (req, res) => {
     }
     clientes.push(cliente1);
     clientes.push(cliente2);
-    res.render("contrato/add_contrato", { clientes: clientes });
+    res.render("contract/add_contract", { clientes: clientes });
 })
 
 app.get("/contrato/busca_contrato", (req, res) => {
-    res.render("contrato/busca_contrato");
+    res.render("contract/recovery_contract");
 })
 
 app.get("/contrato/busca_contrato/:busca", (req, res) => {
@@ -146,7 +149,7 @@ app.get("/contrato/busca_contrato/:busca", (req, res) => {
         }
     }
     contratos.push(novoContrato);
-    res.render("contrato/busca_contrato", { contratos: contratos });
+    res.render("contract/recovery_contract", { contratos: contratos });
 
 })
 
@@ -166,7 +169,7 @@ app.get("/contrato/info_contrato/:id", (req, res) => {
             state: "New York"
         }
     }
-    res.render("contrato/info_contrato", { contrato: contrato });
+    res.render("contract/description_contract", { contrato: contrato });
 })
 
 app.get("/contrato/edit_contrato/:id", (req, res) => {
@@ -185,12 +188,9 @@ app.get("/contrato/edit_contrato/:id", (req, res) => {
             state: "New York"
         }
     }
-    res.render("contrato/edit_contrato", { contrato: contrato });
+    res.render("contract/edit_contract", { contrato: contrato });
 })
 
-app.get("/receita/add_receita", (req, res) => {
-    res.render("receita/add_receita");
-})
 
 app.get("/perfil", (req, res) => {
     res.render("perfil");

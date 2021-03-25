@@ -1,0 +1,135 @@
+<script>
+    var elementoAtivo = document.getElementsByClassName("active");
+    elementoAtivo[0].classList.remove('active');
+    var elemento = document.getElementById("searchCashier");
+    elemento.classList.add("active");
+
+    function print2() {
+        var tabela = document.getElementById('tabela').innerHTML;
+        var creditoTotal = document.getElementById("totalCredito").innerText;
+        var debitoTotal = document.getElementById("totalDebito").innerText;
+        var saldoTotal = document.getElementById("totalSaldo").innerText;
+
+        var style = "<style>";
+        style = style + "table {width: 100%;font: 20px Calibri;}";
+        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+        style = style + "padding: 2px 3px;text-align: center;}";
+        style = style + "h1 {text-align:center;}";
+        style = style + "h3 {text-align:right;}";
+        style = style + "</style>";
+
+        var win = window.open('about:blank');
+        win.document.write('<html><head>');
+        win.document.write(style);                                     // INCLUI UM ESTILO NA TAB HEAD
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write('<h1> Cleaning Company App </h1> ');
+        win.document.write('<h1> Busca de Caixas </h1>');
+        win.document.write('</br>');
+        win.document.write(tabela);
+        win.document.write('</br>');
+        win.document.write('<h3> Resultado Atual </h3>');
+        win.document.write('<h3> Crédito Total: ' + creditoTotal + '</h3>');
+        win.document.write('<h3> Débito Total: ' + debitoTotal + '</h3>');
+        win.document.write('<hr>')
+        win.document.write('<h3> Saldo Total: ' + saldoTotal + '</h3>');
+        win.document.write('</body></html>');
+        win.document.close(); 	                                         // FECHA A JANELA
+        win.print();
+    }
+
+</script>
+
+
+<div class="card">
+
+    <div class="card-header text-white" style="background-color:lightslategray">
+        <div class="row g-3">
+            <div class="col-1">
+                <img class="rounded mx-auto d-block" src="/img/moneySearch2.png" width="60px" heigth="60px" alt="">
+            </div>
+            <div class="col-11 mt-4">
+                <h1>Buscar Caixa</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <form action="/cash_desk/list" method="GET">
+            <div class="row g-3">
+                <div class="mt-4 col-auto">
+                    <label class="form-label" for="initialDate">Data Inicial:</label>
+                </div>
+                <div class="col">
+                    <input type="date" name="initialDate" id="initialDate" class="form-control">
+                </div>
+                <div class="mt-4 col-auto">
+                    <label class="form-label" for="finalDate">Data Final:</label>
+                </div>
+                <div class="col">
+                    <input type="date" name="finalDate" id="finalDate" class="form-control">
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary" type="submit"> <img src="/img/search3.png" alt=""> Buscar
+                        Caixas</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div id="tabela">
+
+    <table class="table table-hover table-dark table-bordered mt-4">
+        <thead>
+            <tr align="center">
+                <th scope="col">Data</th>
+                <th scope="col">Crédito</th>
+                <th scope="col">Débito</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each cashier}}
+            <tr class="table-primary">
+                <td align="center">{{date}}</td>
+                <td align="center">{{credit}}</td>
+                <td align="center">{{debit}}</td>
+            </tr>
+
+
+            {{else}}
+            <div class="mt-3 alert alert-danger">
+                <h6>Nenhum caixa encontrado entre as datas especificadas</h6>
+            </div>
+            {{/each}}
+
+        </tbody>
+    </table>
+
+</div>
+
+<div class="card mt-4 text-end">
+    <div class="card-header bg-secondary text-white ">
+        <h5 class="mt-2"> Resultado atual </h5>
+    </div>
+    <div class="card-body">
+        <div class="row border-bottom ">
+            <h6 class="mt-2"> <img class="mb-2 me-1" src="/img/more.png" width="28px" height="28px" alt="">
+                Crédito Total: <b id="totalCredito"> R$ {{credito_total}} </b> </h5>
+        </div>
+        <div class="row border-bottom border-1 border-dark">
+            <h6 class="mt-2"> <img class="mb-2 me-1" src="/img/menos.png" width="28px" height="28px" alt="">
+                Débito Total: <b id="totalDebito"> R$ {{debito_total}} </b> </h5>
+        </div>
+        <div class="row ">
+            <h6 class="mt-2"> <img class="mb-2 me-1" src="/img/profits.png" width="28px" height="28px" alt="">
+                Saldo Total: <b id="totalSaldo"> R$ {{saldo_total}} </b> </h5>
+        </div>
+
+    </div>
+</div>
+
+<div class="mt-3" align="center">
+    <button type="button" onclick="print2()" class="btn btn-primary">Imprimir</button>
+</div>
