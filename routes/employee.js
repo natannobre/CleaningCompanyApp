@@ -5,7 +5,7 @@ require("../models/employee")
 const Employee = mongoose.model("employee")
 
 router.post("/add", (req, res) =>{
-    var erros = []
+    var erros = [];
 
     if(!req.body.user_name || typeof req.body.user_name ==undefined || req.body.user_name ==null){
         erros.push({texto: "Usuário inválido"})
@@ -34,10 +34,12 @@ router.post("/add", (req, res) =>{
         Employee.findOne({ssn: req.body.ssn}).then((employee)=> {
 
             if(employee){
-                req.flash("error_msg", "ssn_exist")
+                req.flash("error_msg", "ssn_exist");
+                res.redirect("/employee/add");
             }else{
                 const newEmployee = new Employee({
                     user_name: req.body.user_name,
+                    password: req.body.password,
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     ssn: req.body.ssn,
@@ -45,9 +47,12 @@ router.post("/add", (req, res) =>{
                 })
 
                 newEmployee.save().then(() => {
-                    req.flash("success_msg", "registered")
+                    req.flash("success_msg", "registered");
+                    res.redirect("/employee/add");
                 }).catch((err)=>{
-                    req.flash("error_msg", "no registered")
+                    console.log(err);
+                    req.flash("error_msg", "no registered");
+                    res.redirect("/employee/add");
                 })
             }
         }).catch((err)=> {
@@ -58,18 +63,17 @@ router.post("/add", (req, res) =>{
 })
 
 router.get("/add", (req, res) => {
-    res.render("employee/add");
+    res.render("employee/add_employee");
 })
 
 router.get("/recovery", (req, res) => {
-    res.render("employee/recovery");
+    res.render("employee/recovery_employee");
 })
 
-router.get("/recovery/:user_name", (req, res) => {
-    employees = [];   
-    Employee.find({user_name: req.params.user_name}).lean().then((employee) => {
-        if(employee){
-            employees.push(employee)
+router.get("/recovery/search", (req, res) => { 
+    Employee.find({user_name: req.query.user_name}).lean().then((employees) => {
+        if(employees){
+            res.render("employee/recovery_employee", {employees: employees});
         }else{
             req.flash("error_msg", "no find employee")
         }
@@ -77,7 +81,7 @@ router.get("/recovery/:user_name", (req, res) => {
         console.log(err)
     })
     
-    res.render("employee/recovery", {employees: employees});
+    
 })
 
 router.get("/description/:id", (req, res) => {

@@ -17,10 +17,10 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="/funcionario/busca_funcionario/:busca" method="GET">
+        <form action="/employee/recovery/search" method="GET">
             <div class="row g-3">
                 <div class="col">
-                    <input type="text" name="busca" class="form-control"
+                    <input type="text" name="user_name" class="form-control"
                         placeholder="Digite o nome para buscar entre os funcionários">
                 </div>
                 <div class="col">
@@ -42,7 +42,7 @@
         </tr>
     </thead>
     <tbody>
-        {{#each funcionarios}}
+        {{#each employees}}
         <tr>
             <td>{{first_name}}</td>
             <td>{{last_name}}</td>

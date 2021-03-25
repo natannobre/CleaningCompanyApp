@@ -1,0 +1,21 @@
+<script>
+  var elementoAtivo = document.getElementsByClassName("active");
+  elementoAtivo[0].classList.remove('active');
+  var elemento = document.getElementById("limpezaDoDia");
+  elemento.classList.add("active");
+</script>
+
+
+<div class="card">
+
+  <div class="card-header text-white" style="background-color:lightslategray">
+    <div class="row g-3">
+      <div class="col-1">
+        <img class="rounded mx-auto d-block" src="/img/cleaning2.png" width="60px" heigth="60px" alt="">
+      </div>
+      <div class="col-11 mt-4">
+        <h1>Limpezas do Dia - {{data}}</h1>
+      </div>
+    </div>
+  </div>
+</div>
