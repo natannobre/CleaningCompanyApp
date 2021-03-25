@@ -18,30 +18,36 @@
         </div>
     </div>
     <div class="card-body bg-info">
-        <form>
+        <form method="POST" action="/employee/update">
+            
             <div class="mb-3">
                 <label for="user_name" class="form-label">Nome de Usuário</label>
-                <input type="text" class="form-control" value="{{funcionario.user_name}}" name="user_name" id="user_name" required="true"
+                <input type="text" class="form-control" value="{{employee.user_name}}" name="user_name" id="user_name" required="true"
                     aria-describedby="user_name">
             </div>
             <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" value="{{employee.password}}" class="form-control" name="password" id="password" required="true">
+            </div>
+            <div class="mb-3">
                 <label for="first_name" class="form-label">Primeiro Nome</label>
-                <input type="text"  value="{{funcionario.first_name}}" class="form-control" name="first_name" id="first_name" required="true">
+                <input type="text"  value="{{employee.first_name}}" class="form-control" name="first_name" id="first_name" required="true">
             </div>
             <div class="mb-3">
                 <label for="last_name" class="form-label">Último Nome</label>
-                <input type="text" class="form-control" value="{{funcionario.last_name}}" name="last_name" id="last_name" required="true">
+                <input type="text" class="form-control" value="{{employee.last_name}}" name="last_name" id="last_name" required="true">
             </div>
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <label for="SSN" class="form-label">SSN</label>
-                    <input type="text" class="form-control" id="SSN" name="ssn" value="{{funcionario.ssn}}" required="true">
+                    <input type="text" class="form-control" id="SSN" name="ssn" value="{{employee.ssn}}" required="true">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Telefone</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="{{funcionario.phone}}" required="true">
+                    <input type="text" class="form-control" id="phone" name="phone" value="{{employee.phone}}" required="true">
                 </div>
             </div>
+            <input type="hidden" name="id" value="{{employee._id}}">
             <div align="center">
                 <button type="submit" class="btn btn-primary">Salvar</button>
                 <button type="button" class="ms-3 btn btn-primary" onclick="location.href = document.referrer;">Voltar</button>

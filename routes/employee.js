@@ -24,7 +24,7 @@ router.post("/add", (req, res) =>{
         erros.push({texto: "SSN inválido"})
     }    
 
-    if(!req.body.phone || typeof req.body.phone ==undefined || req.body.phone ==null){
+    if(!req.body.phone || typeof req.body.phone == undefined || req.body.phone ==null){
         erros.push({texto: "Phone inválido"})
     }        
 
@@ -80,29 +80,62 @@ router.get("/recovery/search", (req, res) => {
     }). catch((err)=> {
         console.log(err)
     })
-    
-    
 })
 
 router.get("/description/:id", (req, res) => {
-    Employee.findOne({first_name: req.params.id}).lean().then((employee) => {
+    Employee.findOne({_id: req.params.id}).lean().then((employee) => {
         if(employee){
-            res.render("employee/description", {employee: employee})
+            res.render("employee/description_employee", {employee: employee})
         }else{
-            req.flash("error_msg", "no find employee")
+            req.flash("error_msg", "no find employee");
+            res.redirect("/home");
         }
     }). catch((err)=> {
         console.log(err)
     })    
 })
 
-router.post("/update/:id", (req, res) => {
-    Employee.replaceOne({id: req.body.id}, {user_name: req.body.user_name, password: req.body.password, first_name: req.body.first_name, last_name: req.body.last_name,ssn: req.body.ssn, phone: req.body.phone}
-    ).lean().then((employee)=> {
-        res.render("employee/description", {employee: employee})
-    }).catch((err)=> {
-        req.flash("error_msg", "can't update")
+router.get("/edit/:id", (req, res) => {
+    console.log(req.params.id);
+    Employee.findOne({_id: req.params.id}).lean().then((employee) => {
+        if(employee){
+            res.render("employee/edit_employee", {employee: employee})
+        }else{
+            req.flash("error_msg", "no find employee");
+            res.redirect("/home");
+        }
+    }). catch((err)=> {
+        console.log(err)
     })    
+})
+
+router.post("/update", (req, res) => {
+    console.log("Chegou aqyu");
+    Employee.replaceOne({_id: req.body.id}, 
+    {user_name: req.body.user_name, 
+     password: req.body.password, 
+     first_name: req.body.first_name, 
+     last_name: req.body.last_name,
+     ssn: req.body.ssn, 
+     phone: req.body.phone}
+    ).lean().then((employee)=> {
+        req.flash("success_msg", "Atualizado");
+        res.redirect("/employee/recovery");
+
+    }).catch((err)=> {
+        req.flash("error_msg", "can't update");
+        res.redirect("/employee/recovery");
+    })    
+})
+
+router.post("/delete", (req, res) =>{
+    Employee.deleteOne({_id: req.body.id}).lean().then((employee)=> {
+        req.flash("success_msg", "deleted");
+        res.redirect("/employee/recovery");
+    }).catch((err)=> {
+        req.flash("error_msg", "can't delete");
+        res.redirect("/employee/recovery");
+    })
 })
 
 module.exports = router

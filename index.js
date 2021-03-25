@@ -82,6 +82,8 @@ app.use((req, res, next) => {
         ssn: "11111111",
         phone: "(88) 99999-9999"
     }
+    res.locals.success_msg = req.flash("success_msg");
+    res.locals.error_msg = req.flash("error_msg");
     next();
 })
 
@@ -103,79 +105,6 @@ app.get("/home", (req, res) => {
 
 app.use("/client", client);
 app.use("/employee", employee);
-
-
-app.get("/funcionario/busca_funcionario", (req, res) => {
-    res.render("funcionario/busca_funcionario");
-})
-
-
-
-app.get("/funcionario/info_funcionario/:id", (req, res) => {
-    novoFuncionario = {
-        first_name: "Pessoa",
-        last_name: "da Terra",
-        user_name: "pessoadaterra",
-        phone: "(88) 99999-9999",
-        ssn: "123456789"
-    }
-    res.render("funcionario/info_funcionario", { funcionario: novoFuncionario })
-})
-
-app.get("/funcionario/edit_funcionario/:id", (req, res) => {
-    novoFuncionario = {
-        first_name: "Pessoa",
-        last_name: "da Terra",
-        user_name: "pessoadaterra",
-        phone: "(88) 99999-9999",
-        ssn: "123456789"
-    }
-    res.render("funcionario/edit_funcionario", { funcionario: novoFuncionario })
-})
-
-
-app.get("/cliente/add_cliente", (req, res) => {
-    res.render("cliente/add_cliente");
-})
-
-app.get("/cliente/busca_cliente", (req, res) => {
-    res.render("cliente/busca_cliente");
-})
-
-app.get("/cliente/busca_cliente/:busca", (req, res) => {
-    clientes = [];
-    novoCliente = {
-        first_name: "Pessoa",
-        last_name: "da Terra",
-        email: "pessoadaterra@gmail.com",
-        phone: "(88) 99999-9999",
-        SSN: "123456789"
-    }
-    clientes.push(novoCliente)
-    res.render("cliente/busca_cliente", { clientes: clientes });
-})
-
-app.get("/cliente/info_cliente/:id", (req, res) => {
-    novoCliente = {
-        first_name: "Pessoa",
-        last_name: "da Terra",
-        email: "pessoadaterra@gmail.com",
-        phone: "(88) 99999-9999",
-        ssn: "123456789"
-    }
-    res.render("cliente/info_cliente", { cliente: novoCliente })
-})
-
-app.get("/cliente/edit_cliente/:id", (req, res) => {
-    novoCliente = {
-        first_name: "Pessoa",
-        last_name: "da Terra",
-        email: "pessoadaterra@gmail.com",
-        phone: "(88) 99999-9999",
-        ssn: "123456789"
-    }
-    res.render("cliente/edit_cliente", { cliente: novoCliente })
-})
 
 
 app.get("/contrato/add_contrato", (req, res) => {
@@ -282,9 +211,9 @@ app.get("/limpeza/limpeza_do_dia", (req, res) => {
 
 app.get('/logout', (req, res) => {
     //req.logOut();
-    res.locals.usuario = false;
+    //res.locals.usuario = false;
     //req.flash("success_msg", "Deslogado do sistema")
-    res.redirect("/")
+    res.redirect("/");
 })
 
 

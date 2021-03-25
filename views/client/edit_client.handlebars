@@ -18,30 +18,31 @@
         </div>
     </div>
     <div class="card-body bg-info">
-        <form>
+        <form method="post" action="/client/update">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" value="{{cliente.email}}" name="email" id="email" required="true"
+                <input type="text" class="form-control" value="{{client.email}}" name="email" id="email" required="true"
                     aria-describedby="email">
             </div>
             <div class="mb-3">
                 <label for="first_name" class="form-label">Primeiro Nome</label>
-                <input type="text"  value="{{cliente.first_name}}" class="form-control" name="first_name" id="first_name" required="true">
+                <input type="text"  value="{{client.first_name}}" class="form-control" name="first_name" id="first_name" required="true">
             </div>
             <div class="mb-3">
                 <label for="last_name" class="form-label">Último Nome</label>
-                <input type="text" class="form-control" value="{{cliente.last_name}}" name="last_name" id="last_name" required="true">
+                <input type="text" class="form-control" value="{{client.last_name}}" name="last_name" id="last_name" required="true">
             </div>
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <label for="SSN" class="form-label">SSN</label>
-                    <input type="text" class="form-control" id="SSN" name="ssn" value="{{cliente.ssn}}" required="true">
+                    <input type="text" class="form-control" id="SSN" name="ssn" value="{{client.ssn}}" required="true">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Telefone</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="{{cliente.phone}}" required="true">
+                    <input type="text" class="form-control" id="phone" name="phone" value="{{client.phone}}" required="true">
                 </div>
             </div>
+            <input type="hidden" name="id" value="{{client._id}}">
             <div align="center">
                 <button type="submit" class="btn btn-primary">Salvar</button>
                 <button type="button" class="ms-3 btn btn-primary" onclick="location.href = document.referrer;">Voltar</button>

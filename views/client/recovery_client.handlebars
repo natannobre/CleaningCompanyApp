@@ -17,10 +17,10 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="/cliente/busca_cliente/:busca" method="GET">
+        <form action="/client/recovery/search" method="GET">
             <div class="row g-3">
                 <div class="col">
-                    <input type="text" name="busca" class="form-control"
+                    <input type="text" name="first_name" class="form-control"
                         placeholder="Digite o nome para buscar entre os clientes">
                 </div>
                 <div class="col">
@@ -42,7 +42,7 @@
         </tr>
     </thead>
     <tbody>
-        {{#each clientes}}
+        {{#each clients}}
         <tr>
             <td>{{email}}</td>
             <td>{{first_name}}</td>
@@ -52,15 +52,15 @@
                 <form action="">
                     <input type="hidden" name="id" value="{{_id}}">
                     <div class="d-grid gap-2 d-md-block">
-                        <a href="/cliente/info_cliente/:{{_id}}"><button class="btn btn-secondary btn-sm"
-                                type="button"> <img src="/img/info.png" width="16px" height="16px" alt="">
+                        <a href="/client/description/{{_id}}"><button class="btn btn-secondary btn-sm" type="button">
+                                <img src="/img/info.png" width="16px" height="16px" alt="">
                                 Info</button></a>
-                        <a href="/cliente/edit_cliente/:{{_id}}"><button class="btn btn-dark btn-sm"
-                                type="button"> <img src="/img/pencil.png" width="16px" height="16px" alt="">
+                        <a href="/client/edit/{{_id}}"><button class="btn btn-dark btn-sm" type="button"> <img
+                                    src="/img/pencil.png" width="16px" height="16px" alt="">
                                 Editar</button></a>
                         <a href="#"><button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#excluirCliente" type="button"> <img src="/img/delete.png"
-                                    width="18px" height="18px" alt=""> Excluir</button></a>
+                                data-bs-target="#excluirCliente" type="button"> <img src="/img/delete.png" width="18px"
+                                    height="18px" alt=""> Excluir</button></a>
                     </div>
                 </form>
             </td>
@@ -78,8 +78,13 @@
                         <h6>Deseja realmente excluir o cliente {{first_name}} {{last_name}} ?</h6>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
-                        <form action=""><button type="button" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> </form>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img
+                                src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
+                        <form action="/client/delete" method="POST">
+                            <input type="hidden" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-success"> <img src="/img/check.png" width="22px"
+                                    height="22px" alt=""> Deletar</button>
+                        </form>
                     </div>
                 </div>
             </div>

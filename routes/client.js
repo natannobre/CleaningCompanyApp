@@ -2,13 +2,17 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/client")
-const Client = mongoose.model("client")
+const Client = mongoose.model("client");
 
-router.post("/add", (req, res) =>{
+router.get("/add", (req, res) => {
+    res.render("client/add_client");
+})
+
+router.post("/add", (req, res) => {
     var erros = []
 
     if(!req.body.email || typeof req.body.email ==undefined || req.body.email ==null){
-        erros.push({texto: "Usuário inválido"})
+        erros.push({texto: "E-mail inválido"})
     }
 
 
@@ -32,7 +36,8 @@ router.post("/add", (req, res) =>{
         Client.findOne({ssn: req.body.ssn}).then((client)=> {
 
             if(client){
-                req.flash("error_msg", "client_exist")
+                req.flash("error_msg", "client_exist");
+                res.render("client/add_client");
             }else{
                 const novoClient = new Client({
                     email: req.body.email,
@@ -43,31 +48,64 @@ router.post("/add", (req, res) =>{
                 })
 
                 novoClient.save().then(() => {
-                    req.flash("success_msg", "Registered")
+                    req.flash("success_msg", "Registered");
+                    res.redirect("/home");
                 }).catch((err)=>{
-                    req.flash("error_msg", "no registered")
+                    req.flash("error_msg", "no registered");
+                    res.redirect("/home");
                 })
             }
         }).catch((err)=> {
-            res.redirect("/")
+            res.redirect("/home");
         })
 
     }
 })
 
-router.get("/recovery/:id", (req, res) =>{
-    Client.findOne({id: req.params.id}).lean().then((client) => {
-        if(client){
-            res.render("client/recovery", {client: client})
+router.get("/recovery", (req, res) => {
+    res.render("client/recovery_client");
+})
+
+router.get("/recovery/search", (req, res) => { 
+    Client.find({first_name: req.query.first_name}).lean().then((clients) => {
+        if(clients){
+            res.render("client/recovery_client", {clients: clients});
         }else{
-            req.flash("error_msg", "no found client")
+            req.flash("error_msg", "no find client");
+            res.redirect("/client/recovery")
         }
     }). catch((err)=> {
         console.log(err)
     })
 })
 
-router.get("/list", (req, res) =>{
+router.get("/description/:id", (req, res) =>{
+    Client.findOne({_id: req.params.id}).lean().then((client) => {
+        if(client){
+            res.render("client/description_client", {client: client})
+        }else{
+            req.flash("error_msg", "no found client");
+            res.redirect("/client/recovery");
+        }
+    }). catch((err)=> {
+        console.log(err)
+    })
+})
+
+router.get("/edit/:id", (req, res) =>{
+    Client.findOne({_id: req.params.id}).lean().then((client) => {
+        if(client){
+            res.render("client/edit_client", {client: client})
+        }else{
+            req.flash("error_msg", "no found client");
+            res.redirect("/client/recovery");
+        }
+    }). catch((err)=> {
+        console.log(err)
+    })
+})
+
+router.get("/list", (req, res) => {
     clients = [];  
     Client.find().lean().then((client)=> {
         clients.push(client)
@@ -77,20 +115,29 @@ router.get("/list", (req, res) =>{
     res.render("client/list", {clients: clients});
 })
 
-router.delete("/deleteOne/:id", (req, res) =>{
+router.post("/delete", (req, res) => {
     Client.deleteOne({id: req.params.id}).lean().then((client)=> {
-        req.flash("success_msg", "deleted")
+        req.flash("success_msg", "deleted");
+        res.redirect("/client/recovery");
     }).catch((err)=> {
-        req.flash("error_msg", "can't delete")
+        req.flash("error_msg", "can't delete");
+        res.redirect("/client/recovery");
     })
 })
 
-router.put("/update", (req, res) =>{
-    Client.replaceOne({id: req.body.id}, {email: "Isaac@gmail.com", first_name: "silva", last_name: "jose",ssn: "123", phone: "12"}
+router.post("/update", (req, res) =>{
+    Client.replaceOne({_id: req.body.id}, 
+    {email: req.body.email, 
+    first_name: req.body.first_name, 
+    last_name: req.body.last_name,
+    ssn: req.body.ssn,
+    phone: req.body.phone}
     ).lean().then((client)=> {
-        req.flash("success_msg", "updated")
+        req.flash("success_msg", "updated");
+        res.redirect("/client/recovery");
     }).catch((err)=> {
-        req.flash("error_msg", "can't update")
+        req.flash("error_msg", "can't update");
+        res.redirect("/client/recovery");
     })
 })
 

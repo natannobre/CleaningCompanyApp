@@ -49,20 +49,18 @@
             <td>{{user_name}}</td>
             <td align="center">{{phone}}</td>
             <td align="center">
-                <form action="">
                     <input type="hidden" name="id" value="{{_id}}">
                     <div class="d-grid gap-2 d-md-block">
-                        <a href="/funcionario/info_funcionario/:{{_id}}"><button class="btn btn-secondary btn-sm"
+                        <a href="/employee/description/{{_id}}"><button class="btn btn-secondary btn-sm"
                                 type="button"> <img src="/img/info.png" width="16px" height="16px" alt="">
                                 Info</button></a>
-                        <a href="/funcionario/edit_funcionario/:{{_id}}"><button class="btn btn-dark btn-sm"
+                        <a href="/employee/edit/{{_id}}"><button class="btn btn-dark btn-sm"
                                 type="button"> <img src="/img/pencil.png" width="16px" height="16px" alt="">
                                 Editar</button></a>
                         <a href="#"><button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#excluirFuncionario" type="button"> <img src="/img/delete.png"
                                     width="18px" height="18px" alt=""> Excluir</button></a>
                     </div>
-                </form>
             </td>
         </tr>
         <!-- Modal -->
@@ -79,7 +77,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
-                        <form action=""><button type="button" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> </form>
+                        <form action="/employee/delete" method="post">
+                            <input type="hidden" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> </form>
                     </div>
                 </div>
             </div>
