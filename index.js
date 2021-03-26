@@ -15,6 +15,7 @@ const client = require("./routes/client");
 const employee = require("./routes/employee");
 const income = require("./routes/income");
 const cash_desk = require("./routes/cash_desk");
+const contract = require("./routes/contract");
 
 
 function mascaraData(data) {
@@ -108,24 +109,8 @@ app.use("/client", client);
 app.use("/employee", employee);
 app.use("/income",  income);
 app.use("/cash_desk", cash_desk);
+app.use("/contract", contract);
 
-
-app.get("/contrato/add_contrato", (req, res) => {
-    var clientes = [];
-    var cliente1 = {
-        _id: 1,
-        first_name: "Natan",
-        last_name: "Nobre"
-    }
-    var cliente2 = {
-        _id: 2,
-        first_name: "Ruan",
-        last_name: "Felipe"
-    }
-    clientes.push(cliente1);
-    clientes.push(cliente2);
-    res.render("contract/add_contract", { clientes: clientes });
-})
 
 app.get("/contrato/busca_contrato", (req, res) => {
     res.render("contract/recovery_contract");

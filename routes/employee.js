@@ -128,6 +128,18 @@ router.post("/update", (req, res) => {
     })    
 })
 
+router.get("/list", (req, res) => {
+ 
+    Employee.find().lean().then((employees)=> {
+        res.render("employee/recovery_employee", {employees: employees});
+    }).catch((err)=> {
+        req.flash("error_msg", "Não encontrado")
+        console.log(err)
+        res.redirect("/home")        
+    })
+    
+})
+
 router.post("/delete", (req, res) =>{
     Employee.deleteOne({_id: req.body.id}).lean().then((employee)=> {
         req.flash("success_msg", "deleted");

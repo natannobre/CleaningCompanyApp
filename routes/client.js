@@ -106,13 +106,14 @@ router.get("/edit/:id", (req, res) =>{
 })
 
 router.get("/list", (req, res) => {
-    clients = [];  
-    Client.find().lean().then((client)=> {
-        clients.push(client)
+
+    Client.find().lean().then((clients)=> {
+        res.render("client/recovery_client", {clients: clients});
     }).catch((err)=> {
-        req.flash("error_msg", "can't list")
+        req.flash("error_msg", "Não pode listar!")
+        res.redirect("/home")
     })
-    res.render("client/list", {clients: clients});
+    
 })
 
 router.post("/delete", (req, res) => {

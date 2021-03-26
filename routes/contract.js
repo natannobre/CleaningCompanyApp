@@ -3,76 +3,69 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/contract")
 const Contract = mongoose.model("contract")
+const Client = mongoose.model("client")
 
 router.post("/add", (req, res) =>{
     var erros = [];
 
-    if(!req.body.contract_price || typeof req.body.contract_price ==undefined || req.body.contract_price ==null){
-        erros.push({texto: "Preço inválido"})
-    }    
+    // if(!req.body.contract_price || typeof req.body.contract_price ==undefined || req.body.contract_price ==null){
+    //     erros.push({texto: "Preço inválido"})
+    // }    
 
-    if(!req.body.contract_type || typeof req.body.contract_type ==undefined || req.body.contract_type ==null){
-        erros.push({texto: "Tipo de contrato inválido"})
-    }    
+    // if(!req.body.contract_type || typeof req.body.contract_type ==undefined || req.body.contract_type ==null){
+    //     erros.push({texto: "Tipo de contrato inválido"})
+    // }    
     
-    if(!req.body.validity || typeof req.body.validity ==undefined || req.body.validity ==null){
-        erros.push({texto: "Validade inválida"})
-    }    
+    // if(!req.body.validity || typeof req.body.e ==undefined || req.body.validity ==null){
+    //     erros.push({texto: "Validade inválida"})
+    // }    
 
-    if(!req.body.status || typeof req.body.status == undefined || req.body.status ==null){
-        erros.push({texto: "Status inválido"})
-    }     
     
-    if(!req.body.address || typeof req.body.address == undefined || req.body.address ==null){
-        erros.push({texto: "Endereço inválido"})
-    }     
+    
 
     if(erros.length > 0){
-        res.render("contract/add", {erros: erros})
+        res.render("contract/add_contract", {erros: erros})
     }else{
-        Contract.findOne({client_name: req.body.client_name}).then((contract)=> {
-
-            if(contract){
-                req.flash("error_msg", "Cliente já possui contrato!");
-                res.redirect("/contract/add");
-            }else{
-                const newAdress = {
-                    zipcode: req.body.zipcode,
-                    street: req.body.street,
-                    number: req.body.number,
-                    neighborhood: req.body.neighborhood,
-                    state: req.body.state,
-                    city: req.body.city
-                }
-
-                const newContract = new Contract({
-                    client_id: req.body.client_id,
-                    client_name: req.body.client_name,
-                    contract_price: Float.parseFloat(req.body.contract_price),
-                    contract_type: req.body.contract_type,
-                    expiration: req.body.expiration,
-                    status: req.body.status,
-                    address: newAdress
-                })
-
-                newContract.save().then(() => {
-                    req.flash("success_msg", "Contrato registrado com sucesso!");
-                    res.redirect("/contract/add");
-                }).catch((err)=>{
-                    console.log(err);
-                    req.flash("error_msg", "Contrato não registrado!");
-                    res.redirect("/contract/add");
-                })
-            }
-        }).catch((err)=> {
-            res.redirect("/")
+        var cliente = req.body.client
+        var partesCliente = cliente.split("-")
+        var id_cliente = partesCliente[0]
+        var nome_cliente= partesCliente[1]+" "+partesCliente[2]
+        const newAdress = {
+            zipcode: req.body.zipcode,
+            street: req.body.street,
+            number: req.body.number,
+            neighborhood: req.body.neighborhood,
+            state: req.body.state,
+            city: req.body.city
+        }
+        const newContract = new Contract({
+            client_id: id_cliente,
+            client_name: nome_cliente,
+            contract_price: req.body.contract_price,
+            contract_type: req.body.contract_type,
+            expiration: req.body.expiration,
+            status: true,
+            address: newAdress
         })
 
+        newContract.save().then(() => {
+            req.flash("success_msg", "Contrato registrado com sucesso!");
+            res.redirect("/contract/add");
+        }).catch((err)=>{
+            console.log(err);
+            req.flash("error_msg", "Contrato não registrado!");
+            res.redirect("/contract/add");
+        })                  
     }
 })
 
 router.get("/add", (req, res) => {
-    res.render("contract/add_contract");
+    Client.find().lean().then((clients)=> {
+        res.render("contract/add_contract", {clients: clients});
+    }).catch((err)=> {
+        req.flash("error_msg", "Não pode listar!")
+        res.redirect("/home")
+    })
 })
 
 router.get("/recovery", (req, res) => {

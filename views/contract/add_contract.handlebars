@@ -19,13 +19,13 @@
     </div>
   </div>
   <div class="card-body bg-info">
-    <form>
+    <form method="post" action="add">
       <div class="mb-3">
         <label for="client" class="form-label">Cliente:</label>
-        <select required class="form-select" aria-label="Default select example">
+        <select required class="form-select" name="client" aria-label="Default select example">
             <option disabled="true" selected="true">Selecione um cliente</option>
-            {{#each clientes}}
-                <option value="{{_id}}">{{first_name}} {{last_name}}</option>
+            {{#each clients}}
+                <option value="{{_id}}-{{first_name}}-{{last_name}}">{{first_name}} {{last_name}}</option>
             {{else}}
 
             {{/each}}
@@ -84,8 +84,8 @@
             <input type="text" class="form-control" name="city" id="city" required="true">
         </div>
         <div class="col-md-4">
-          <label for="sub_division" class="form-label">Estado</label>
-          <input type="text" class="form-control" id="sub_division" name="sub_division" required="true">
+          <label for="state" class="form-label">Estado</label>
+          <input type="text" class="form-control" id="state" name="state" required="true">
         </div>
       </div>
 

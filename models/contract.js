@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const Client = new Schema({
+const Contract = new Schema({
     client_id: {
         type: String, 
         required: true
@@ -24,7 +24,8 @@ const Client = new Schema({
     },  
     status: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     },
     address: {
         zipcode: {
@@ -36,7 +37,7 @@ const Client = new Schema({
             required: true
         },  
         number: {
-            type: number,
+            type: Number,
             required: true
         },     
         neighborhood: {
@@ -54,7 +55,7 @@ const Client = new Schema({
     }    
 })
 
-mongoose.model("client", Client)
+mongoose.model("contract", Contract)
 // contrato
 // {
 //   "client_id": "",
