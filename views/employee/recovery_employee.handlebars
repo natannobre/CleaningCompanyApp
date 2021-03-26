@@ -53,7 +53,6 @@
             <td>{{user_name}}</td>
             <td align="center">{{phone}}</td>
             <td align="center">
-                    <input type="hidden" name="id" value="{{_id}}">
                     <div class="d-grid gap-2 d-md-block">
                         <a href="/employee/description/{{_id}}"><button class="btn btn-secondary btn-sm"
                                 type="button"> <img src="/img/info.png" width="16px" height="16px" alt="">
@@ -82,8 +81,9 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
                         <form action="/employee/delete" method="post">
-                            <input type="hidden" name="id" value="{{_id}}">
-                            <button type="submit" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> </form>
+                            <input type="text" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button>
+                        </form>
                     </div>
                 </div>
             </div>

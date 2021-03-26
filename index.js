@@ -18,32 +18,6 @@ const cash_desk = require("./routes/cash_desk");
 const contract = require("./routes/contract");
 
 
-function mascaraData(data) {
-    dia = data.getDate();
-    mes = data.getMonth() + 1;
-    ano = data.getFullYear();
-    data = dia + "-" + mes + "-" + ano;
-    partesData = data.split("-")
-    var novaData
-
-    if (partesData[0].length == 1) {
-        novaData = "0" + partesData[0]
-    } else {
-        novaData = partesData[0]
-    }
-
-    novaData = novaData + "/"
-
-    if (partesData[1].length == 1) {
-        novaData = novaData + "0" + partesData[1]
-    } else {
-        novaData = novaData + partesData[1]
-    }
-
-    novaData = novaData + "/" + partesData[2]
-    return novaData
-}
-
 //Configuração do body-parser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json())

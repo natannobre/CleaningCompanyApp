@@ -17,18 +17,18 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="/contrato/busca_contrato/:busca" method="GET">
+        <form action="/contract/recovery/search" method="GET">
             <div class="row g-3">
                 <div class="col-sm-7">
-                    <input type="text" name="busca" class="form-control"
-                        placeholder="Digite o nome para buscar entre os contratos">
+                    <input type="text" name="client_name" class="form-control"
+                        placeholder="Digite o nome do cliente para buscar entre os contratos">
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-primary" type="submit"> <img src="/img/search3.png" alt=""> Buscar
                         Contratos</button>
                 </div>
                 <div class="col-auto">
-                    <a href=""><button class="btn btn-primary" type="button"> <img src="/img/list2.png" alt=""> Listar
+                    <a href="/contract/list"><button class="btn btn-primary" type="button"> <img src="/img/list2.png" alt=""> Listar
                         Todos</button></a>
                 </div>
             </div>
@@ -41,25 +41,25 @@
             <th scope="col">Cliente</th>
             <th scope="col">Preço do Contrato</th>
             <th scope="col">Tipo de Contrato</th>
-            <th scope="col">Telefone</th>
+            <th scope="col">Endereço</th>
             <th scope="col">Ações</th>
         </tr>
     </thead>
     <tbody>
-        {{#each contratos}}
+        {{#each contracts}}
         <tr>
-            <td>{{client}}</td>
-            <td align="center">{{price}}</td>
-            <td>{{type}}</td>
-            <td align="center">{{phone}}</td>
+            <td>{{client_name}}</td>
+            <td align="center">{{contract_price}}</td>
+            <td>{{contract_type}}</td>
+            <td align="center">{{address.street}}, {{address.number}}</td>
             <td align="center">
                 <form action="">
                     <input type="hidden" name="id" value="{{_id}}">
                     <div class="d-grid gap-2 d-md-block">
-                        <a href="/contrato/info_contrato/:{{_id}}"><button class="btn btn-secondary btn-sm"
+                        <a href="/contract/description/{{_id}}"><button class="btn btn-secondary btn-sm"
                                 type="button"> <img src="/img/info.png" width="16px" height="16px" alt="">
                                 Info</button></a>
-                        <a href="/contrato/edit_contrato/:{{_id}}"><button class="btn btn-dark btn-sm"
+                        <a href="/contract/edit/{{_id}}"><button class="btn btn-dark btn-sm"
                                 type="button"> <img src="/img/pencil.png" width="16px" height="16px" alt="">
                                 Editar</button></a>
                         <a href="#"><button class="btn btn-danger btn-sm" data-bs-toggle="modal"
@@ -83,7 +83,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
-                        <form action=""><button type="button" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> </form>
+                        <form action="/contract/delete" method="post">
+                            <button type="submite" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> 
+                            <input type="hidden" name="id" value="{{_id}}">
+                        </form>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,32 @@ require("../models/contract")
 const Contract = mongoose.model("contract")
 const Client = mongoose.model("client")
 
+function mascaraData(data) {
+    dia = data.getDate()+1;
+    mes = data.getMonth()+1;
+    ano = data.getFullYear();
+    data = dia + "-" + mes + "-" + ano;
+    partesData = data.split("-")
+    var novaData
+
+    if (partesData[0].length == 1) {
+        novaData = "0" + partesData[0]
+    } else {
+        novaData = partesData[0]
+    }
+
+    novaData = novaData + "/"
+
+    if (partesData[1].length == 1) {
+        novaData = novaData + "0" + partesData[1]
+    } else {
+        novaData = novaData + partesData[1]
+    }
+
+    novaData = novaData + "/" + partesData[2]
+    return novaData
+}
+
 router.post("/add", (req, res) =>{
     var erros = [];
 
@@ -20,9 +46,9 @@ router.post("/add", (req, res) =>{
     //     erros.push({texto: "Validade inválida"})
     // }    
 
+ 
     
-    
-
+    var dataAux = new Date(req.body.expiration)
     if(erros.length > 0){
         res.render("contract/add_contract", {erros: erros})
     }else{
@@ -43,7 +69,7 @@ router.post("/add", (req, res) =>{
             client_name: nome_cliente,
             contract_price: req.body.contract_price,
             contract_type: req.body.contract_type,
-            expiration: req.body.expiration,
+            expiration: dataAux,
             status: true,
             address: newAdress
         })
@@ -86,11 +112,14 @@ router.get("/recovery/search", (req, res) => {
 })
 
 router.get("/description/:id", (req, res) => {
-    Contract.findOne({client_name: req.params.client_name}).lean().then((contract) => {
-        if(contract){
+    Contract.findOne({_id: req.params.id}).lean().then((contract) => {
+        if(contract){            
+            var auxContr = contract.expiration
+            // var parteDate = (auxContr.toISOString()).split("T")
+            contract.expiration = mascaraData(auxContr)
             res.render("contract/description_contract", {contract: contract})
         }else{
-            req.flash("error_msg", "Contrato não encontrado@");
+            req.flash("error_msg", "Contrato não encontrado!");
             res.redirect("/home");
         }
     }). catch((err)=> {
@@ -99,8 +128,18 @@ router.get("/description/:id", (req, res) => {
 })
 
 router.get("/edit/:id", (req, res) => {
-    Contract.findOne({client_name: req.params.client_name}).lean().then((contract) => {
+    Contract.findOne({_id: req.params.id}).lean().then((contract) => {
         if(contract){
+            var auxContr = contract.expiration
+            var parteDate = (auxContr.toISOString()).split("T")
+            contract.expiration = parteDate[0]
+            if (contract.contract_type =="mensal") {
+                contract.mensal = true
+            } else if(contract.contract_type =="semanal") {
+                contract.semanal = true
+            } else if(contract.contract_type =="quinzenal") {
+                contract.quinzenal = true
+            }
             res.render("contract/edit_contract", {contract: contract})
         }else{
             req.flash("error_msg", "Contrato não encontrado!");
@@ -121,28 +160,37 @@ router.post("/update", (req, res) => {
         state: req.body.state,
         city: req.body.city
     }
-
-    Contract.replaceOne({client_name: req.body.client_name}, 
+    var dataAux = new Date(req.body.expiration)
+    Contract.updateOne({_id: req.body.id},{$set:
     {
-        client_id: req.body.client_id,
-        client_name: req.body.client_name,
-        contract_price: Float.parseFloat(req.body.contract_price),
+        contract_price: req.body.contract_price,
         contract_type: req.body.contract_type,
-        expiration: req.body.expiration,
-        status: req.body.status,
+        expiration: dataAux,
         address: newAdress
-    }
+    }}
     ).lean().then((contract)=> {
         req.flash("success_msg", "Contrato atualizado!");
         res.redirect("/contract/recovery");
     }).catch((err)=> {
         req.flash("error_msg", "Falha ao atualizar contrato!");
+        console.log(err)
         res.redirect("/contract/recovery");
     })    
 })
 
+router.get("/list", (req, res) => {
+
+    Contract.find().lean().then((contracts)=> {
+        res.render("contract/recovery_contract", {contracts: contracts});
+    }).catch((err)=> {
+        req.flash("error_msg", "Não pode listar!")
+        res.redirect("/home")
+    })
+    
+})
+
 router.post("/delete", (req, res) =>{
-    Contract.deleteOne({client_name: req.body.client_name}).lean().then((contract)=> {
+    Contract.deleteOne({_id: req.body.id}).lean().then((contract)=> {
         req.flash("success_msg", "Contrato deletado!");
         res.redirect("/contract/recovery");
     }).catch((err)=> {

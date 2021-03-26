@@ -18,73 +18,88 @@
         </div>
     </div>
     <div class="card-body bg-info">
-        <form>
+        <form action="/contract/update" method="POST">
         <div class="mb-3">
-            <label for="client" class="form-label">Cliente:</label>
-            <input type="text" class="form-control" value="{{contrato.client}}" name="cliente" id="cliente"
-                    aria-describedby="cliente">
+            <label for="client_name" class="form-label">Cliente:</label>
+            <input type="text" class="form-control" value="{{contract.client_name}}" name="client_name" id="client_name"
+                    aria-describedby="cliente" readonly>
         </div>
         <div class="row g-3 mb-3">
             <div class="col-md-6">
             <label for="contract_price" class="form-label">Preço do Contrato em R$</label>
-            <input type="text" class="form-control" value="{{contrato.price}}" name="contract_price" id="contract_price"
+            <input type="text" class="form-control" value="{{contract.contract_price}}" name="contract_price" id="contract_price"
                     aria-describedby="contract_price">
             </div>
             <div class="col-md-6">
             <label for="validity" class="form-label">Validade do Contrato</label>
-            <input type="text" class="form-control" value="{{contrato.expiration}}" name="expiration" id="expiration"
+            <input type="date" class="form-control" value="{{contract.expiration}}" name="expiration" id="expiration"
                     aria-describedby="expiration">
             </div>
         </div>
         <div class="mb-3">
             <label for="contract_type" class="form-label">Tipo do Contrato</label><br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="contract_type" id="semanal" value="semanal" required="true">
+                <input class="form-check-input" type="radio" name="contract_type" id="semanal" value="semanal" required="true" 
+                {{#if contract.semanal}}
+                checked
+                {{else}}
+                {{/if}}
+                >
                 <label class="form-check-label" for="semanal">Semanal</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="contract_type" id="quinzenal" value="quinzenal" required="true">
+                <input class="form-check-input" type="radio" name="contract_type" id="quinzenal" value="quinzenal" required="true"
+                {{#if contract.quinzenal}}
+                checked
+                {{else}}
+                {{/if}}
+                >
                 <label class="form-check-label" for="quinzenal">Quinzenal</label>
                 </div>
                 <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="contract_type" id="mensal" value="mensal" required="true" checked>
+                <input class="form-check-input" type="radio" name="contract_type" id="mensal" value="mensal" required="true"
+                {{#if contract.mensal}}
+                checked
+                {{else}}
+                {{/if}}
+                >
                 <label class="form-check-label" for="mensal">Mensal</label>
             </div>
         </div>
         <div class="row g-3 mb-3">
             <div class="mb-3 col-10">
                 <label for="street" class="form-label">Rua</label>
-                <input type="text" class="form-control" name="street" id="street" required="true" value="{{contrato.address.street}}">
+                <input type="text" class="form-control" name="street" id="street" required="true" value="{{contract.address.street}}">
             </div>
             <div class="col-md-2">
             <label for="number" class="form-label">Número</label>
-            <input type="text" class="form-control" name="number" id="number" required="true" value="{{contrato.address.number}}">
+            <input type="text" class="form-control" name="number" id="number" required="true" value="{{contract.address.number}}">
             </div>
         </div>
         
         <div class="row g-3 mb-3">
             <div class="col-md-8 mb-3">
                 <label for="neighborhood" class="form-label">Bairro</label>
-                <input type="text" class="form-control" name="neighborhood" id="neighborhood" required="true" value="{{contrato.address.neighborhood}}">
+                <input type="text" class="form-control" name="neighborhood" id="neighborhood" required="true" value="{{contract.address.neighborhood}}">
             </div>
             <div class="col-md-4">
             <label for="zipcode" class="form-label">Código Postal</label>
-            <input type="text" class="form-control" name="zipcode" id="zipcode" required="true" value="{{contrato.address.zipcode}}">
+            <input type="text" class="form-control" name="zipcode" id="zipcode" required="true" value="{{contract.address.zipcode}}">
             </div>
         </div>
 
         <div class="row g-3 mb-3">
             <div class="col-md-8 mb-3">
                 <label for="city" class="form-label">Cidade</label>
-                <input type="text" class="form-control" name="city" id="city" required="true" value="{{contrato.address.city}}">
+                <input type="text" class="form-control" name="city" id="city" required="true" value="{{contract.address.city}}">
             </div>
             <div class="col-md-4">
             <label for="sub_division" class="form-label">Estado</label>
-            <input type="text" class="form-control" name="state" id="state" required="true" value="{{contrato.address.state}}">
+            <input type="text" class="form-control" name="state" id="state" required="true" value="{{contract.address.state}}">
             </div>
         </div>
-
-        <div align="center">
+        <input type="hidden" name="id" value="{{contract._id}}">
+        <div align="center">            
             <button type="submit" class="btn btn-primary">Salvar</button>
                 <button type="button" class="ms-3 btn btn-primary" onclick="location.href = document.referrer;">Voltar</button>
         </div>

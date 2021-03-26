@@ -127,12 +127,12 @@ router.post("/delete", (req, res) => {
 })
 
 router.post("/update", (req, res) =>{
-    Client.replaceOne({_id: req.body.id}, 
+    Client.updateOne({_id: req.body.id},{$set: 
     {email: req.body.email, 
     first_name: req.body.first_name, 
     last_name: req.body.last_name,
     ssn: req.body.ssn,
-    phone: req.body.phone}
+    phone: req.body.phone}}
     ).lean().then((client)=> {
         req.flash("success_msg", "updated");
         res.redirect("/client/recovery");

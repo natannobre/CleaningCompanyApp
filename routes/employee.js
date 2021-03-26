@@ -111,13 +111,13 @@ router.get("/edit/:id", (req, res) => {
 
 router.post("/update", (req, res) => {
     console.log("Chegou aqyu");
-    Employee.replaceOne({_id: req.body.id}, 
+    Employee.updateOne({_id: req.body.id}, {$set:
     {user_name: req.body.user_name, 
      password: req.body.password, 
      first_name: req.body.first_name, 
      last_name: req.body.last_name,
      ssn: req.body.ssn, 
-     phone: req.body.phone}
+     phone: req.body.phone}}
     ).lean().then((employee)=> {
         req.flash("success_msg", "Atualizado");
         res.redirect("/employee/recovery");
