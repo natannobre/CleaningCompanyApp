@@ -1,27 +1,39 @@
 const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
+require("../models/income")
+const Income = mongoose.model("income")
 
 router.get("/dailyList", (req, res) => {
-    var incomes = [];
-    var income1 = {
-        value: "200,00",
-        type: true,
-        description: "Valor de contrato recebido"
+    
+    incomes = [];  
+    Income.find({date: Date.parse(req.query.date)}).lean().then((income)=> {
+        incomes.push(income)
+    }).catch((err)=> {
+        req.flash("error_msg", "Não encontrou correspondência a essa data!")
+    })
+    credito_t = 0
+    debito_t = 0
+    total = 0
+
+    for (const inc of incomes) {
+        if(inc.type == "Crédito") {
+            credito_t += inc.value
+        } else if (inc.type == "Débito") {
+            debito_t += inc.value
+        }
     }
-    var income2 = {
-        value: "50,00",
-        type: false,
-        description: "Compra de Equipamentos"
-    }
-    incomes.push(income1);
-    incomes.push(income2);
+    var dateObj = new Date();
+
+    hoje = ""+dateObj.getUTCFullYear()+"-"+dateObj.getUTCMonth() + 1+"-"+dateObj.getUTCDate();
     res.render("cash_desk/daily_cashier", 
-    {data: "25/03/2021", data2: "2021-03-25",
-     incomes: incomes,
-     credito_total: "200,00",
-     debito_total: "50,00",
-     saldo_total: "150,00",
+    {
+        data: req.query.date, 
+        data2: hoje,
+        incomes: incomes,
+        credito_total: credito_t.toString(),
+        debito_total: debito_t.toString(),
+        saldo_total: (credito_t-debito_t).toString(),
     });
 })
 
@@ -30,6 +42,13 @@ router.get("/search", (req, res) => {
 })
 
 router.get("/list", (req, res) => {
+    
+    // var dateAux = Date.parse(req.query.initialDate);
+    // while(dateAux <= Date.parse(req.query.finalDate)) {
+    //     dateAux.setDate(dateAux.getDate() + 1);
+    // }
+    // tomorrow.setDate(tomorrow.getDate() + 1);
+    
     var cashier = [];
     var cash1 = {
         date: "25/03/2021",

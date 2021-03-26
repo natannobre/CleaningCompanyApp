@@ -33,7 +33,7 @@ router.post("/add", (req, res) =>{
         Contract.findOne({client_name: req.body.client_name}).then((contract)=> {
 
             if(contract){
-                req.flash("error_msg", "Contrato já existe!");
+                req.flash("error_msg", "Cliente já possui contrato!");
                 res.redirect("/contract/add");
             }else{
                 const newAdress = {

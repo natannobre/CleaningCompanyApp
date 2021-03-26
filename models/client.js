@@ -25,10 +25,3 @@ const Client = new Schema({
 })
 
 mongoose.model("client", Client)
-// {
-// 	"email": "",
-// 	"first_name": "",
-// 	"last_name": "",
-// 	"cpf": "",
-// 	"phone": ""
-// }

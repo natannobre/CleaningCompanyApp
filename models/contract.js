@@ -19,11 +19,11 @@ const Client = new Schema({
         required: true
     },
     expiration: {
-        type: date,
+        type: Date,
         required: true
     },  
     status: {
-        type: bool,
+        type: Boolean,
         required: true
     },
     address: {
