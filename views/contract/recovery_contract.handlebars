@@ -63,14 +63,14 @@
                                 type="button"> <img src="/img/pencil.png" width="16px" height="16px" alt="">
                                 Editar</button></a>
                         <a href="#"><button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#excluirContrato" type="button"> <img src="/img/delete.png"
+                                data-bs-target="#excluirContrato-{{_id}}" type="button"> <img src="/img/delete.png"
                                     width="18px" height="18px" alt=""> Excluir</button></a>
                     </div>
                 </form>
             </td>
         </tr>
         <!-- Modal -->
-        <div class="modal fade" id="excluirContrato" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="excluirContrato-{{_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -79,12 +79,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <h6>Deseja realmente excluir o contrato com {{client}} em {{address.neighborhood}} ?</h6>
+                        <h6>Deseja realmente excluir o contrato com {{client_name}} em {{address.neighborhood}} ?</h6>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
                         <form action="/contract/delete" method="post">
-                            <button type="submite" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> 
+                            <button type="submit" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button> 
                             <input type="hidden" name="id" value="{{_id}}">
                         </form>
                     </div>

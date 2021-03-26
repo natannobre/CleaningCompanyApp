@@ -117,7 +117,7 @@ router.get("/list", (req, res) => {
 })
 
 router.post("/delete", (req, res) => {
-    Client.deleteOne({id: req.params.id}).lean().then((client)=> {
+    Client.deleteOne({_id: req.body.id}).lean().then((client)=> {
         req.flash("success_msg", "deleted");
         res.redirect("/client/recovery");
     }).catch((err)=> {

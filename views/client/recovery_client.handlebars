@@ -63,14 +63,14 @@
                                     src="/img/pencil.png" width="16px" height="16px" alt="">
                                 Editar</button></a>
                         <a href="#"><button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#excluirCliente" type="button"> <img src="/img/delete.png" width="18px"
+                                data-bs-target="#excluirCliente-{{_id}}" type="button"> <img src="/img/delete.png" width="18px"
                                     height="18px" alt=""> Excluir</button></a>
                     </div>
                 </form>
             </td>
         </tr>
         <!-- Modal -->
-        <div class="modal fade" id="excluirCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="excluirCliente-{{_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

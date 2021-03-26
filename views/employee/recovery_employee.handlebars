@@ -3,6 +3,7 @@
     elementoAtivo[0].classList.remove('active');
     var elemento = document.getElementById("buscarFuncionario");
     elemento.classList.add("active");
+
 </script>
 
 <div class="card">
@@ -60,14 +61,14 @@
                         <a href="/employee/edit/{{_id}}"><button class="btn btn-dark btn-sm"
                                 type="button"> <img src="/img/pencil.png" width="16px" height="16px" alt="">
                                 Editar</button></a>
-                        <a href="#"><button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#excluirFuncionario" type="button"> <img src="/img/delete.png"
-                                    width="18px" height="18px" alt=""> Excluir</button></a>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#excluirFuncionario-{{_id}}" type="button"> <img src="/img/delete.png"
+                                    width="18px" height="18px" alt=""> Excluir</button>
                     </div>
             </td>
         </tr>
         <!-- Modal -->
-        <div class="modal fade" id="excluirFuncionario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="excluirFuncionario-{{_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -81,7 +82,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
                         <form action="/employee/delete" method="post">
-                            <input type="text" name="id" value="{{_id}}">
+                            <input type="hidden" name="id" value="{{_id}}">
                             <button type="submit" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button>
                         </form>
                     </div>
