@@ -20,21 +20,21 @@
   </div>
 
   <div class="card-body bg-info">
-    <form>
+    <form action="add" method="post">
       <div class="mb-3">
         <label for="value" class="form-label">Valor em R$</label>
-        <input type="number" step="0.01" min="0.01" class="form-control" id="value" placeholder="120,00 R$">
+        <input type="number" step="0.01" min="0.01" name="value" class="form-control" id="value" id="name" placeholder="120,00 R$">
       </div>
       <div class="mb-3">
         <label for="type" class="form-label">Tipo da Receita</label>
-        <select name="type" required class="form-select" aria-label="Default select example">
-          <option selected="true" value="1">Crédito</option>
-          <option value="0">Débito</option>
+        <select name="type" name="type" required class="form-select" aria-label="Default select example">
+          <option selected="true" name="credito" value="1">Crédito</option>
+          <option value="0" name="debito" >Débito</option>
         </select>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Descrição</label>
-        <textarea class="form-control" id="description" rows="3"></textarea>
+        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
       </div>
 
       <div align="center" class="mt-3">

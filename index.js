@@ -34,7 +34,7 @@ var hbs = handlebars.create({});
 
 // register new function
 hbs.handlebars.registerHelper('if_eq', function(a, b, opts) {
-    if (a === b) {
+    if (a == b) {
         return opts.fn(this);
     } else {
         return opts.inverse(this);
@@ -101,18 +101,6 @@ app.get("/perfil", (req, res) => {
     res.render("perfil");
 })
 
-app.get("/limpeza/limpeza_do_dia", (req, res) => {
-    var data = new Date();
-    var dataHoje = mascaraData(data);
-    var limpeza = {
-        contract_id: 1,
-        client_id: 2,
-        date: "24/03/2021",
-        status: "Não realizada"
-    }
-
-    res.render("limpeza/limpeza_do_dia", { data: dataHoje, limpeza: limpeza })
-})
 
 app.get('/logout', (req, res) => {
     //req.logOut();

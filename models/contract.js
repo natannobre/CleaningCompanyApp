@@ -63,10 +63,6 @@ const Contract = new Schema({
             required: true
         } 
     },
-    initialDate: {
-        type: Date,
-        required: true
-    },
     cleanings:{
         type: Object
     }

@@ -48,10 +48,10 @@ router.post("/add", (req, res) => {
                 })
 
                 novoClient.save().then(() => {
-                    req.flash("success_msg", "Registered");
-                    res.redirect("/home");
+                    req.flash("success_msg", "Cliente Registrado");
+                    res.redirect("/client/add");
                 }).catch((err)=>{
-                    req.flash("error_msg", "no registered");
+                    req.flash("error_msg", "Erro ao registrar o cliente");
                     res.redirect("/home");
                 })
             }
@@ -118,7 +118,7 @@ router.get("/list", (req, res) => {
 
 router.post("/delete", (req, res) => {
     Client.deleteOne({_id: req.body.id}).lean().then((client)=> {
-        req.flash("success_msg", "deleted");
+        req.flash("success_msg", "Cliente Deletado");
         res.redirect("/client/recovery");
     }).catch((err)=> {
         req.flash("error_msg", "can't delete");
@@ -134,7 +134,7 @@ router.post("/update", (req, res) =>{
     ssn: req.body.ssn,
     phone: req.body.phone}}
     ).lean().then((client)=> {
-        req.flash("success_msg", "updated");
+        req.flash("success_msg", "Cliente Atualizado");
         res.redirect("/client/recovery");
     }).catch((err)=> {
         req.flash("error_msg", "can't update");

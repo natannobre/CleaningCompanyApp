@@ -4,37 +4,128 @@ const mongoose = require('mongoose');
 require("../models/income")
 const Income = mongoose.model("income")
 
-router.get("/dailyList", (req, res) => {
-    
-    incomes = [];  
-    Income.find({date: Date.parse(req.query.date)}).lean().then((income)=> {
-        incomes.push(income)
-    }).catch((err)=> {
-        req.flash("error_msg", "Não encontrou correspondência a essa data!")
-    })
-    credito_t = 0
-    debito_t = 0
-    total = 0
-
-    for (const inc of incomes) {
-        if(inc.type == "Crédito") {
-            credito_t += inc.value
-        } else if (inc.type == "Débito") {
-            debito_t += inc.value
+function mascaraDePreco(preco) {
+    stringPreco = preco.toString().replace('.', ',')
+    var i = stringPreco.indexOf(",")
+    tamanho = stringPreco.length
+    var substringPreco
+    if (i == -1) {
+        stringPreco = stringPreco.concat(",00")
+    } else {
+        substringPreco = stringPreco.substr(i + 1, tamanho)
+        if (substringPreco.length < 2) {
+            stringPreco = stringPreco.concat("0")
         }
     }
-    var dateObj = new Date();
+    return stringPreco
+}
 
-    hoje = ""+dateObj.getUTCFullYear()+"-"+dateObj.getUTCMonth() + 1+"-"+dateObj.getUTCDate();
-    res.render("cash_desk/daily_cashier", 
-    {
-        data: req.query.date, 
-        data2: hoje,
-        incomes: incomes,
-        credito_total: credito_t.toString(),
-        debito_total: debito_t.toString(),
-        saldo_total: (credito_t-debito_t).toString(),
-    });
+function mascaraDataBanco(data){
+    var dataAux = data.toISOString().split("T");
+    var partesData = dataAux[0].split("-");
+    var novaData;
+
+    if (partesData[2].length == 1) {
+        novaData = "0" + partesData[2]
+    } else {
+        novaData = partesData[2]
+    }
+
+    novaData = novaData + "/"
+
+    if (partesData[1].length == 1) {
+        novaData = novaData + "0" + partesData[1]
+    } else {
+        novaData = novaData + partesData[1]
+    }
+
+    novaData = novaData + "/" + partesData[0]
+    return novaData;
+}
+
+//soma 1 quando vem pelo req.query e 0 quando pega do banco
+function mascaraData(data, val) {
+    dia = data.getDate()+val;
+    mes = data.getMonth()+1;
+    ano = data.getFullYear();
+    data = dia + "-" + mes + "-" + ano;
+    partesData = data.split("-")
+    var novaData
+
+    if (partesData[0].length == 1) {
+        novaData = "0" + partesData[0]
+    } else {
+        novaData = partesData[0]
+    }
+
+    novaData = novaData + "/"
+
+    if (partesData[1].length == 1) {
+        novaData = novaData + "0" + partesData[1]
+    } else {
+        novaData = novaData + partesData[1]
+    }
+
+    novaData = novaData + "/" + partesData[2]
+    return novaData
+}
+
+
+router.get("/dailyList", (req, res) => {
+    
+    var dataAux = (req.query.date) ? new Date(req.query.date) : new Date();
+    var val = (req.query.date) ? 1 : 0;
+
+    incomesOfDate = [];  
+
+    Income.find().lean().then((incomes)=> {
+        if(incomes) {                     
+            var credito_t = 0
+            var debito_t = 0
+            
+            for (const inc of incomes) {
+                const data1 = mascaraDataBanco(inc.date);
+                const data2 = mascaraData(dataAux, val);
+                
+                console.log(data1+"--"+data2);//comparando as datas
+                
+                if(data1 == data2) {
+                    
+                    
+                    if(inc.type == "1") {
+                        credito_t += inc.value;
+                        inc.type = true;
+                    } else if (inc.type == "0") {
+                        debito_t += inc.value;
+                        inc.type = false; 
+                    }
+                    inc.value = mascaraDePreco(inc.value);
+                    incomesOfDate.push(inc)
+                    
+                }
+
+            }
+            var partesDateToday = dataAux.toISOString().split("T");
+            var dateToday = partesDateToday[0];
+            console.log(dateToday);
+            res.render("cash_desk/daily_cashier", 
+            {
+                data: mascaraData(dataAux,val), 
+                data2: dateToday,
+                incomes: incomesOfDate,
+                credito_total: mascaraDePreco(credito_t),
+                debito_total: mascaraDePreco(debito_t),
+                saldo_total: mascaraDePreco((credito_t - debito_t)),
+            });
+        } else {
+            req.flash("error_msg", "Caixa não encontrado!");
+            res.redirect("/home");
+        }
+    }).catch((err)=> {
+        req.flash("error_msg", "Não encontrou correspondência a essa data!")
+        console.log(err);
+        
+    })    
 })
 
 router.get("/search", (req, res) => {
@@ -42,35 +133,53 @@ router.get("/search", (req, res) => {
 })
 
 router.get("/list", (req, res) => {
-    
-    // var dateAux = Date.parse(req.query.initialDate);
-    // while(dateAux <= Date.parse(req.query.finalDate)) {
-    //     dateAux.setDate(dateAux.getDate() + 1);
-    // }
-    // tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
+    var dataAux1 = new Date(req.query.initialDate)
+    var dataAux2 = new Date(req.query.finalDate)
+ 
     var cashier = [];
-    var cash1 = {
-        date: "25/03/2021",
-        credit: "200,00",
-        debit: "50,00",
-        profit: "150,00"
-    }
-    var cash2 = {
-        date: "25/03/2021",
-        credit: "500,00",
-        debit: "150,00",
-        profit: "350,00"
-    }
-    cashier.push(cash1);
-    cashier.push(cash2);
-    res.render("cash_desk/search_cashier", 
-    {
-     cashier: cashier,
-     credito_total: "700,00",
-     debito_total: "200,00",
-     saldo_total: "500,00",
-    });
+
+    Income.find().lean().then((incomes)=> {
+        if(incomes) {                     
+            var credito_t = 0
+            var debito_t = 0
+            
+            for (const inc of incomes) {
+                const dataBanco = mascaraData(inc.date, 0)
+                const dataInicial = mascaraData(dataAux1, 1)
+                const dataFinal = mascaraData(dataAux2, 1)
+                // console.log(data1+"--"+data2);//comparando as datas
+                
+                if((dataBanco >=dataInicial) && (dataBanco <=dataFinal)) {
+                    
+                    cashier.push(inc)
+                    
+                    if(inc.type == "1") {
+                        credito_t += inc.value
+                    } else if (inc.type == "0") {
+                        debito_t += inc.value
+                    }
+                }
+            
+            }
+            res.render("cash_desk/search_cashier", 
+            {
+            cashier: cashier,
+            credito_total: credito_t,
+            debito_total: debito_t,
+            saldo_total: (credito_t-debito_t),
+            });
+        } else {
+            req.flash("error_msg", "Caixa não encontrado!");
+            res.redirect("/home");
+        }
+    }).catch((err)=> {
+        req.flash("error_msg", "Não encontrou correspondência a essa data!")
+        console.log(err);
+        
+    })        
+    
+    
 })
 
 module.exports = router;
