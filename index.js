@@ -29,6 +29,18 @@ app.set('view engine', 'handlebars');
 //Public
 app.use(express.static(path.join(__dirname, "public")))
 
+
+var hbs = handlebars.create({});
+
+// register new function
+hbs.handlebars.registerHelper('if_eq', function(a, b, opts) {
+    if (a === b) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
+    }
+})
+
 //Flash e Session
 app.use(session({
     secret: "cleaningcompanyapp",

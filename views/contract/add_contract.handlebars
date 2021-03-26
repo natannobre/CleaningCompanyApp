@@ -57,6 +57,23 @@
         </div>
       </div>
       <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <label for="employee" class="form-label">Funcionário</label>
+            <select required class="form-select" name="employee" aria-label="Default select example">
+            <option disabled="true" selected="true">Selecione um funcionário</option>
+            {{#each employees}}
+                <option value="{{_id}}-{{first_name}}-{{last_name}}">{{first_name}} {{last_name}}</option>
+            {{else}}
+
+            {{/each}}
+        </select>
+        </div>
+        <div class="col-md-6">
+          <label for="initialDate" class="form-label">Primeira Limpeza</label>
+          <input type="date" class="form-control" id="initialDate" name="initialDate" required="true">
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
         <div class="mb-3 col-10">
             <label for="street" class="form-label">Rua</label>
             <input type="text" class="form-control" name="street" id="street" required="true">

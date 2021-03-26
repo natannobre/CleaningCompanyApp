@@ -3,7 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/contract")
 const Contract = mongoose.model("contract")
-const Client = mongoose.model("client")
+const Client = mongoose.model("client");
+const Employee = mongoose.model("employee");
 
 function mascaraData(data) {
     dia = data.getDate()+1;
@@ -49,13 +50,33 @@ router.post("/add", (req, res) =>{
  
     
     var dataAux = new Date(req.body.expiration)
+    var dataInicial = new Date(req.body.initialDate);
     if(erros.length > 0){
         res.render("contract/add_contract", {erros: erros})
     }else{
         var cliente = req.body.client
         var partesCliente = cliente.split("-")
         var id_cliente = partesCliente[0]
-        var nome_cliente= partesCliente[1]+" "+partesCliente[2]
+        var nome_cliente= partesCliente[1]+" "+partesCliente[2];
+
+        var funcionario = req.body.employee;
+        var partesFuncionario = funcionario.split("-");
+
+        
+        var employee1 = {
+            employee_id: partesFuncionario[0],
+            employee_name: partesFuncionario[1]+" "+partesFuncionario[2]
+        }
+
+        var limpeza = {
+            employee_name: employee1.employee_name,
+            data: dataInicial,
+            status: false
+        }
+
+        var cleanings = [];
+        cleanings.push(limpeza);
+
         const newAdress = {
             zipcode: req.body.zipcode,
             street: req.body.street,
@@ -71,7 +92,10 @@ router.post("/add", (req, res) =>{
             contract_type: req.body.contract_type,
             expiration: dataAux,
             status: true,
-            address: newAdress
+            address: newAdress,
+            initialDate: dataInicial,
+            employee: employee1,
+            cleanings: cleanings
         })
 
         newContract.save().then(() => {
@@ -86,8 +110,14 @@ router.post("/add", (req, res) =>{
 })
 
 router.get("/add", (req, res) => {
-    Client.find().lean().then((clients)=> {
-        res.render("contract/add_contract", {clients: clients});
+    Client.find().lean().then((clients) => {
+        
+        Employee.find().lean().then((employees)=> {
+            res.render("contract/add_contract", {clients: clients, employees: employees});
+        }).catch((err)=> {
+            req.flash("error_msg", "Não pode listar!")
+            res.redirect("/home")
+        })
     }).catch((err)=> {
         req.flash("error_msg", "Não pode listar!")
         res.redirect("/home")
@@ -115,8 +145,10 @@ router.get("/description/:id", (req, res) => {
     Contract.findOne({_id: req.params.id}).lean().then((contract) => {
         if(contract){            
             var auxContr = contract.expiration
+            var dataInicial = contract.initialDate;
             // var parteDate = (auxContr.toISOString()).split("T")
             contract.expiration = mascaraData(auxContr)
+            contract.initialDate = mascaraData(dataInicial);
             res.render("contract/description_contract", {contract: contract})
         }else{
             req.flash("error_msg", "Contrato não encontrado!");
@@ -140,7 +172,12 @@ router.get("/edit/:id", (req, res) => {
             } else if(contract.contract_type =="quinzenal") {
                 contract.quinzenal = true
             }
-            res.render("contract/edit_contract", {contract: contract})
+            Employee.find().lean().then((employees) => {
+                res.render("contract/edit_contract", {contract: contract, employees: employees})
+            }).catch((err) => {
+                console.log(err);
+            })
+            
         }else{
             req.flash("error_msg", "Contrato não encontrado!");
             res.redirect("/home");

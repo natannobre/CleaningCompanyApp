@@ -52,7 +52,24 @@ const Contract = new Schema({
             type: String,
             required: true
         },                           
-    }    
+    },
+    employee:{
+        employee_id: {
+            type: String,
+            required: true
+        },
+        employee_name: {
+            type: String,
+            required: true
+        } 
+    },
+    initialDate: {
+        type: Date,
+        required: true
+    },
+    cleanings:{
+        type: Object
+    }
 })
 
 mongoose.model("contract", Contract)

@@ -43,6 +43,18 @@
                 
             </div>
             <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="employee" class="form-label">Funcionário</label>
+                    <input type="text" class="form-control" value="{{contract.employee.employee_name}}" readonly="true"
+                        name="employee" id="employee" aria-describedby="contract_price">
+                </div>
+                <div class="col-md-6">
+                    <label for="initialDate" class="form-label">Primeira Limpeza</label>
+                    <input type="text" class="form-control" value="{{contract.initialDate}}" readonly="true"
+                        name="initialDate" id="initialDate" aria-describedby="expiration">
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
                 <div class="mb-3 col-10">
                     <label for="street" class="form-label">Rua</label>
                     <input type="text" class="form-control" name="street" id="street" readonly="true" required="true"
