@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/income")
 const Income = mongoose.model("income")
+const {isLogged} = require("../config/isLogged")
+
 
 function mascaraData(data) {
     dia = data.getDate()+1;
@@ -30,11 +32,11 @@ function mascaraData(data) {
     return novaData
 }
 
-router.get("/add", (req, res) => {
+router.get("/add", isLogged, (req, res) => {
     res.render("income/add_income")
 })
 
-router.post("/add", (req, res) => {
+router.post("/add", isLogged, (req, res) => {
     
     var erros = [];
 

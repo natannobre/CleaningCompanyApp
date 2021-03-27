@@ -23,6 +23,9 @@ module.exports = function(passport){
                     return done(null, false, {message: "Senha incorreta"})
                 }
             })
+        }).catch((err)=>{
+            console.log("erro passport"+err);
+            
         })
     }))
 

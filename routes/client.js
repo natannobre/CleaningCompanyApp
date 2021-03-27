@@ -3,12 +3,13 @@ const router = express.Router()
 const mongoose = require('mongoose');
 require("../models/client")
 const Client = mongoose.model("client");
+const {isLogged} = require("../config/isLogged")
 
-router.get("/add", (req, res) => {
+router.get("/add", isLogged, (req, res) => {
     res.render("client/add_client");
 })
 
-router.post("/add", (req, res) => {
+router.post("/add", isLogged, (req, res) => {
     var erros = []
 
     if(!req.body.email || typeof req.body.email ==undefined || req.body.email ==null){
@@ -62,11 +63,11 @@ router.post("/add", (req, res) => {
     }
 })
 
-router.get("/recovery", (req, res) => {
+router.get("/recovery", isLogged, (req, res) => {
     res.render("client/recovery_client");
 })
 
-router.get("/recovery/search", (req, res) => { 
+router.get("/recovery/search", isLogged, (req, res) => { 
     Client.find({first_name: req.query.first_name}).lean().then((clients) => {
         if(clients){
             res.render("client/recovery_client", {clients: clients});
@@ -79,7 +80,7 @@ router.get("/recovery/search", (req, res) => {
     })
 })
 
-router.get("/description/:id", (req, res) =>{
+router.get("/description/:id", isLogged, (req, res) =>{
     Client.findOne({_id: req.params.id}).lean().then((client) => {
         if(client){
             res.render("client/description_client", {client: client})
@@ -92,7 +93,7 @@ router.get("/description/:id", (req, res) =>{
     })
 })
 
-router.get("/edit/:id", (req, res) =>{
+router.get("/edit/:id", isLogged, (req, res) =>{
     Client.findOne({_id: req.params.id}).lean().then((client) => {
         if(client){
             res.render("client/edit_client", {client: client})
@@ -105,7 +106,7 @@ router.get("/edit/:id", (req, res) =>{
     })
 })
 
-router.get("/list", (req, res) => {
+router.get("/list", isLogged, (req, res) => {
 
     Client.find().lean().then((clients)=> {
         res.render("client/recovery_client", {clients: clients});
@@ -116,7 +117,7 @@ router.get("/list", (req, res) => {
     
 })
 
-router.post("/delete", (req, res) => {
+router.post("/delete", isLogged, (req, res) => {
     Client.deleteOne({_id: req.body.id}).lean().then((client)=> {
         req.flash("success_msg", "Cliente Deletado");
         res.redirect("/client/recovery");
@@ -126,7 +127,7 @@ router.post("/delete", (req, res) => {
     })
 })
 
-router.post("/update", (req, res) =>{
+router.post("/update", isLogged, (req, res) =>{
     Client.updateOne({_id: req.body.id},{$set: 
     {email: req.body.email, 
     first_name: req.body.first_name, 

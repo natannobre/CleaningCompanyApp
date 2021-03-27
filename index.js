@@ -22,6 +22,8 @@ const income = require("./routes/income");
 const cash_desk = require("./routes/cash_desk");
 const contract = require("./routes/contract");
 
+const {isLogged} = require("./config/isLogged")
+
 const userEmailAdmin = "admin@admin.com";
 
 //Configuração do body-parser
@@ -126,7 +128,7 @@ app.use((req, res, next) => {
         })(req, res, next)
     })
 
-    app.get("/home", (req, res) => {
+    app.get("/home", isLogged, (req, res) => {
         res.render("home");
     })
 

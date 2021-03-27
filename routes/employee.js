@@ -3,8 +3,10 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/employee")
 const Employee = mongoose.model("employee")
+const {isLogged} = require("../config/isLogged")
 
-router.post("/add", (req, res) =>{
+
+router.post("/add", isLogged, (req, res) =>{
     var erros = [];
 
     if(!req.body.user_name || typeof req.body.user_name ==undefined || req.body.user_name ==null){
@@ -62,7 +64,7 @@ router.post("/add", (req, res) =>{
     }
 })
 
-router.get("/add", (req, res) => {
+router.get("/add", isLogged, (req, res) => {
     res.render("employee/add_employee");
 })
 
@@ -82,7 +84,7 @@ router.get("/recovery/search", (req, res) => {
     })
 })
 
-router.get("/description/:id", (req, res) => {
+router.get("/description/:id", isLogged, (req, res) => {
     Employee.findOne({_id: req.params.id}).lean().then((employee) => {
         if(employee){
             res.render("employee/description_employee", {employee: employee})
@@ -95,7 +97,7 @@ router.get("/description/:id", (req, res) => {
     })    
 })
 
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", isLogged, (req, res) => {
     console.log(req.params.id);
     Employee.findOne({_id: req.params.id}).lean().then((employee) => {
         if(employee){
@@ -109,7 +111,7 @@ router.get("/edit/:id", (req, res) => {
     })    
 })
 
-router.post("/update", (req, res) => {
+router.post("/update", isLogged, (req, res) => {
     console.log("Chegou aqyu");
     Employee.updateOne({_id: req.body.id}, {$set:
     {user_name: req.body.user_name, 
@@ -128,7 +130,7 @@ router.post("/update", (req, res) => {
     })    
 })
 
-router.get("/list", (req, res) => {
+router.get("/list", isLogged, (req, res) => {
  
     Employee.find().lean().then((employees)=> {
         res.render("employee/recovery_employee", {employees: employees});
@@ -140,7 +142,7 @@ router.get("/list", (req, res) => {
     
 })
 
-router.post("/delete", (req, res) =>{
+router.post("/delete", isLogged, (req, res) =>{
     Employee.deleteOne({_id: req.body.id}).lean().then((employee)=> {
         req.flash("success_msg", "deleted");
         res.redirect("/employee/recovery");

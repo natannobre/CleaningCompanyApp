@@ -5,6 +5,7 @@ require("../models/contract")
 const Contract = mongoose.model("contract")
 const Client = mongoose.model("client");
 const Employee = mongoose.model("employee");
+const {isLogged} = require("../config/isLogged")
 
 function mascaraDePreco(preco) {
     stringPreco = preco.toString().replace('.', ',')
@@ -71,7 +72,7 @@ function mascaraDataBanco(data){
     return novaData;
 }
 
-router.post("/add", (req, res) => {
+router.post("/add", isLogged, (req, res) => {
     var erros = [];
 
     // if(!req.body.contract_price || typeof req.body.contract_price ==undefined || req.body.contract_price ==null){
@@ -148,7 +149,7 @@ router.post("/add", (req, res) => {
     }
 })
 
-router.get("/add", (req, res) => {
+router.get("/add", isLogged, (req, res) => {
     Client.find().lean().then((clients) => {
 
         Employee.find().lean().then((employees) => {
@@ -167,7 +168,7 @@ router.get("/recovery", (req, res) => {
     res.render("contract/recovery_contract");
 })
 
-router.get("/recovery/search", (req, res) => {
+router.get("/recovery/search", isLogged, (req, res) => {
     Contract.find({ client_name: req.query.client_name }).lean().then((contracts) => {
         if (contracts) {
             for(var i = 0; i < contracts.length; i++){
@@ -183,7 +184,7 @@ router.get("/recovery/search", (req, res) => {
     })
 })
 
-router.get("/description/:id", (req, res) => {
+router.get("/description/:id", isLogged, (req, res) => {
     Contract.findOne({ _id: req.params.id }).lean().then((contract) => {
         if (contract) {
             var auxContr = contract.expiration
@@ -202,7 +203,7 @@ router.get("/description/:id", (req, res) => {
     })
 })
 
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", isLogged, (req, res) => {
     Contract.findOne({ _id: req.params.id }).lean().then((contract) => {
         if (contract) {
             var auxContr = contract.expiration
@@ -240,7 +241,7 @@ router.get("/edit/:id", (req, res) => {
     })
 })
 
-router.post("/update", (req, res) => {
+router.post("/update", isLogged, (req, res) => {
     Contract.findOne({ _id: req.body.id }).lean().then((contract) => {
         if (contract) {
 
@@ -295,7 +296,7 @@ router.post("/update", (req, res) => {
 
 })
 
-router.get("/list", (req, res) => {
+router.get("/list", isLogged, (req, res) => {
 
     Contract.find().lean().then((contracts) => {
         if(contracts){
@@ -312,7 +313,7 @@ router.get("/list", (req, res) => {
 
 })
 
-router.post("/delete", (req, res) => {
+router.post("/delete", isLogged, (req, res) => {
     Contract.deleteOne({ _id: req.body.id }).lean().then((contract) => {
         req.flash("success_msg", "Contrato deletado!");
         res.redirect("/contract/recovery");

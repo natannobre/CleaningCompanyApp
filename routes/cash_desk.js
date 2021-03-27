@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 require("../models/income")
 const Income = mongoose.model("income")
+const {isLogged} = require("../config/isLogged")
+
 
 function mascaraDePreco(preco) {
     stringPreco = preco.toString().replace('.', ',')
@@ -43,7 +45,6 @@ function mascaraDataBanco(data) {
     return novaData;
 }
 
-//soma 1 quando vem pelo req.query e 0 quando pega do banco
 function mascaraData(data, val) {
     dia = data.getDate() + val;
     mes = data.getMonth() + 1;
@@ -71,7 +72,7 @@ function mascaraData(data, val) {
 }
 
 
-router.get("/dailyList", (req, res) => {
+router.get("/dailyList", isLogged, (req, res) => {
 
     var dataAux = (req.query.date) ? new Date(req.query.date) : new Date();
     var val = (req.query.date) ? 1 : 0;
@@ -128,7 +129,7 @@ router.get("/dailyList", (req, res) => {
     })
 })
 
-router.get("/search", (req, res) => {
+router.get("/search", isLogged, (req, res) => {
     res.render("cash_desk/search_cashier");
 })
 
