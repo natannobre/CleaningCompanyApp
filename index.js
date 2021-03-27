@@ -10,6 +10,11 @@ const db = require("./config/db");
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+require("./config/auth")(passport)
+require("./models/user")
+const User = mongoose.model("user")
+const bcrypt = require("bcryptjs")
+
 
 const client = require("./routes/client");
 const employee = require("./routes/employee");
@@ -17,6 +22,7 @@ const income = require("./routes/income");
 const cash_desk = require("./routes/cash_desk");
 const contract = require("./routes/contract");
 
+const userEmailAdmin = "admin@admin.com";
 
 //Configuração do body-parser
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -29,17 +35,6 @@ app.set('view engine', 'handlebars');
 //Public
 app.use(express.static(path.join(__dirname, "public")))
 
-
-var hbs = handlebars.create({});
-
-// register new function
-hbs.handlebars.registerHelper('if_eq', function(a, b, opts) {
-    if (a == b) {
-        return opts.fn(this);
-    } else {
-        return opts.inverse(this);
-    }
-})
 
 //Flash e Session
 app.use(session({
@@ -63,52 +58,91 @@ mongoose.connect(db.mongoURI, {
 })
 
 app.use((req, res, next) => {
-    res.locals.usuario = {
-        user_name: "natannobre",
-        first_name: "Natan",
-        last_name: "Nobre",
-        ssn: "11111111",
-        phone: "(88) 99999-9999"
-    }
+    res.locals.usuario = req.user || null;
+    res.locals.error = req.flash("error")
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
     next();
 })
 
+//Rotas utilizadas 
+    app.use("/client", client);
+    app.use("/employee", employee);
+    app.use("/income",  income);
+    app.use("/cash_desk", cash_desk);
+    app.use("/contract", contract);
+
+//Rotas
+    app.get("/", (req, res) => {
+        res.redirect("/login");
+    })
+
+    app.get("/login", (req, res)=>{
+        User.findOne({email: userEmailAdmin}).then((user)=> {
+
+            if(user){
+                res.render("login");    
+            }else{
+                const newUser = new User({
+                    email: "admin@admin.com",
+                    first_name: "Administrador",
+                    user_name: "Administrador",
+                    password: "admin",
+                    last_name: "Administrador",
+                    ssn: "Adiministrador",
+                    phone: "Adiministrador"
+                })
+    
+                bcrypt.genSalt(10, (erro, salt)=> {
+                    bcrypt.hash(newUser.password, salt, (erro, passwordHash)=>{
+                        if(erro){
+                            req.flash("error_msg", "Houve um erro durante o salvamento do usuario")
+                            res.redirect("/")
+                        }
+                        newUser.password = passwordHash
+    
+                        newUser.save().then(() => {
+                            console.log("cadastrado")
+                            res.render("login")
+                        }).catch((err)=>{
+                            console.log(err);
+                            res.render("login");
+                        })
+                    })
+                })         
+            }
+        }).catch((err)=> {
+            res.render("login")
+        })
+        
+    })
+
+    app.post("/login",( req, res, next)=> {
+        
+        passport.authenticate("local", {
+            successRedirect: "/home",
+            failureRedirect: "/login",
+            failureFlash: true
+        })(req, res, next)
+    })
+
+    app.get("/home", (req, res) => {
+        res.render("home");
+    })
+
+    app.get('/logout', (req, res) => {
+        req.logOut();
+        // res.locals.usuario = false;
+        req.flash("success_msg", "Deslogado do sistema")
+        res.redirect("/");
+    })
+
+    app.get("/perfil", (req, res) => {
+        res.render("perfil");
+    })
+
 const port = 8888;
 const host = "localhost"
-
-
-app.get("/", (req, res) => {
-    res.redirect("/login");
-})
-
-app.get("/login", (req, res) => {
-    res.render("login");
-})
-
-app.get("/home", (req, res) => {
-    res.render("home");
-})
-
-app.use("/client", client);
-app.use("/employee", employee);
-app.use("/income",  income);
-app.use("/cash_desk", cash_desk);
-app.use("/contract", contract);
-
-app.get("/perfil", (req, res) => {
-    res.render("perfil");
-})
-
-
-app.get('/logout', (req, res) => {
-    //req.logOut();
-    //res.locals.usuario = false;
-    //req.flash("success_msg", "Deslogado do sistema")
-    res.redirect("/");
-})
-
 
 app.listen(port, host, () => {
     console.log("Servidor executando na porta " + port);

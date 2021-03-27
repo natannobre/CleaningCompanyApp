@@ -12,14 +12,19 @@
             CleaningCompany APP </h2>
         </div>
         <div class="card-body">
-            <form action="" method="POST">
+            {{#if error}}
+                <div class="alert alert-danger">{{error}}</div>
+            {{else}}
+
+            {{/if}}
+            <form action="/login" method="POST">
                 <div class="mb-3">
-                    <label for="user_name" class="form-label">Email: </label>
+                    <label for="email" class="form-label">Email: </label>
                     <input type="text" class="form-control" id="email" name="email" aria-describedby="email">
                 </div>
                 <div class="mb-3">
-                    <label for="senha" class="form-label">Senha: </label>
-                    <input type="password" class="form-control" id="senha" name="senha" aria-describedby="senha">
+                    <label for="password" class="form-label">Senha: </label>
+                    <input type="password" class="form-control" id="password" name="password" aria-describedby="senha">
                 </div>
                 <div class="row g-3 align-items-center" align="center">
                     <div class="col-md-7">
