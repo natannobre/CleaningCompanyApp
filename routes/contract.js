@@ -6,6 +6,22 @@ const Contract = mongoose.model("contract")
 const Client = mongoose.model("client");
 const Employee = mongoose.model("employee");
 
+function mascaraDePreco(preco) {
+    stringPreco = preco.toString().replace('.', ',')
+    var i = stringPreco.indexOf(",")
+    tamanho = stringPreco.length
+    var substringPreco
+    if (i == -1) {
+        stringPreco = stringPreco.concat(",00")
+    } else {
+        substringPreco = stringPreco.substr(i + 1, tamanho)
+        if (substringPreco.length < 2) {
+            stringPreco = stringPreco.concat("0")
+        }
+    }
+    return stringPreco
+}
+
 function mascaraData(data) {
     dia = data.getDate();
     mes = data.getMonth() + 1;
@@ -154,6 +170,9 @@ router.get("/recovery", (req, res) => {
 router.get("/recovery/search", (req, res) => {
     Contract.find({ client_name: req.query.client_name }).lean().then((contracts) => {
         if (contracts) {
+            for(var i = 0; i < contracts.length; i++){
+                contracts[i].contract_price = mascaraDePreco(contracts[i].contract_price);
+            }
             res.render("contract/recovery_contract", { contracts: contracts });
         } else {
             req.flash("error_msg", "Contrato não encontrado!")
@@ -279,7 +298,13 @@ router.post("/update", (req, res) => {
 router.get("/list", (req, res) => {
 
     Contract.find().lean().then((contracts) => {
-        res.render("contract/recovery_contract", { contracts: contracts });
+        if(contracts){
+            for(var i = 0; i < contracts.length; i++){
+                contracts[i].contract_price = mascaraDePreco(contracts[i].contract_price);
+            }
+            res.render("contract/recovery_contract", { contracts: contracts });
+        }
+       
     }).catch((err) => {
         req.flash("error_msg", "Não pode listar!")
         res.redirect("/home")
