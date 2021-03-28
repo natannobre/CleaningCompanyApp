@@ -6,14 +6,7 @@ require('./employee')
 const Employee = mongoose.model("employee");
 
 const Contract = new Schema({
-    // client_id: {
-    //     type: String, 
-    //     required: true
-    // },
-    // client_name: {
-    //     type: String, 
-    //     required: true
-    // },
+    
     client: {
         type: Schema.Types.ObjectId,
         ref: Client,
@@ -67,19 +60,11 @@ const Contract = new Schema({
             required: true
         },                           
     },
-    // employee:{
-    //     employee_id: {
-    //         type: String,
-    //         required: true
-    //     },
-    //     employee_name: {
-    //         type: String,
-    //         required: true
-    //     } 
-    // },
-    cleanings:{
-        type: Object
+    nextCleaning: {
+        type: Date,
+        required: true
     }
+
 })
 
 mongoose.model("contract", Contract)

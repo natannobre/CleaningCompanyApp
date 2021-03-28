@@ -1,0 +1,99 @@
+<script>
+  var elementoAtivo = document.getElementsByClassName("active");
+  elementoAtivo[0].classList.remove('active');
+  var elemento = document.getElementById("dailyCleaning");
+  elemento.classList.add("active");
+</script>
+
+
+<div class="card">
+
+  <div class="card-header text-white" style="background-color:lightslategray">
+    <div class="row g-3">
+      <div class="col-1">
+        <img class="rounded mx-auto d-block" src="/img/cleaning2.png" width="60px" heigth="60px" alt="">
+      </div>
+      <div class="col-11 mt-4">
+        <h1>Limpezas do Dia - {{data}}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form action="dailyList" method="get">
+      <div class="row g-3">
+        <div class="mt-4 col-auto">
+          <label class="form-label" for="date">Selecione uma data:</label>
+        </div>
+        <div class="col">
+          <input type="date" name="date" id="date" value="{{data2}}" class="form-control">
+        </div>
+        <div class="col">
+          <button class="btn btn-primary" type="submit"> <img src="/img/search3.png" alt=""> Buscar
+            Limpezas</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<table class="table table-hover table-bordered table-primary mt-4">
+    <thead>
+        <tr align="center">
+            <th scope="col">Cliente</th>
+            <th scope="col">Endereço</th>
+            <th scope="col">Funcionário</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cleanings}}
+        <tr>
+            <td>{{first_name}}</td>
+            <td>{{last_name}}</td>
+            <td>{{user_name}}</td>
+            <td align="center">{{phone}}</td>
+            <td align="center">
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="/employee/description/{{_id}}"><button class="btn btn-secondary btn-sm"
+                                type="button"> <img src="/img/info.png" width="16px" height="16px" alt="">
+                                Info</button></a>
+                        <a href="/employee/edit/{{_id}}"><button class="btn btn-dark btn-sm"
+                                type="button"> <img src="/img/pencil.png" width="16px" height="16px" alt="">
+                                Editar</button></a>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#excluirFuncionario-{{_id}}" type="button"> <img src="/img/delete.png"
+                                    width="18px" height="18px" alt=""> Excluir</button>
+                    </div>
+            </td>
+        </tr>
+        <!-- Modal -->
+        <div class="modal fade" id="excluirFuncionario-{{_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Excluir Funcionário</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Deseja realmente excluir o funcionário {{first_name}} {{last_name}} ?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
+                        <form action="/employee/delete" method="post">
+                            <input type="hidden" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-success"> <img  src="/img/check.png" width="22px" height="22px" alt=""> Deletar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{else}}
+
+        {{/each}}
+
+    </tbody>
+</table>

@@ -3,9 +3,12 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/contract")
 require("../models/client")
+require("../models/employee")
+require("../models/cleaning")
 const Contract = mongoose.model("contract")
 const Client = mongoose.model("client");
 const Employee = mongoose.model("employee");
+const Cleaning = mongoose.model("cleaning");
 const { isLogged } = require("../config/isLogged")
 
 function mascaraDePreco(preco) {
@@ -96,16 +99,7 @@ router.post("/add", isLogged, (req, res) => {
     if (erros.length > 0) {
         res.render("contract/add_contract", { erros: erros })
     } else {
-        
 
-        var limpeza = {
-            employee: mongoose.Types.ObjectId(req.body.employee),
-            date: dataInicial,
-            status: false
-        }
-
-        var cleanings = [];
-        cleanings.push(limpeza);
 
         const newAdress = {
             zipcode: req.body.zipcode,
@@ -123,12 +117,25 @@ router.post("/add", isLogged, (req, res) => {
             expiration: dataAux,
             status: true,
             address: newAdress,
-            cleanings: cleanings
+            nextCleaning: dataInicial
         })
 
-        newContract.save().then(() => {
-            req.flash("success_msg", "Contrato registrado com sucesso!");
-            res.redirect("/contract/add");
+        newContract.save().then((contract) => {
+
+            const newCleaning = new Cleaning({
+                date: dataInicial,
+                employee: mongoose.Types.ObjectId(req.body.employee),
+                contract: mongoose.Types.ObjectId(contract._id),
+            })
+            newCleaning.save().then(() => {
+                req.flash("success_msg", "Contrato registrado com sucesso!");
+                res.redirect("/contract/add");
+            }).catch((err) => {
+                console.log(err);
+                req.flash("error_msg", "Limpeza não registrada!");
+                res.redirect("/contract/add");
+            })
+
         }).catch((err) => {
             console.log(err);
             req.flash("error_msg", "Contrato não registrado!");
@@ -194,8 +201,8 @@ router.get("/description/:id", isLogged, (req, res) => {
     Contract.findOne({ _id: req.params.id }).lean().populate("client").populate("employee").then((contract) => {
         if (contract) {
             var auxContr = contract.expiration
-            var dataProximaLimpeza = contract.cleanings.pop().date;
-            
+            var dataProximaLimpeza = contract.nextCleaning;
+
             contract.expiration = mascaraDataBanco(auxContr)
             contract.nextCleaningDate = mascaraDataBanco(dataProximaLimpeza);
             res.render("contract/description_contract", { contract: contract })
@@ -222,19 +229,18 @@ router.get("/edit/:id", isLogged, (req, res) => {
                 contract.quinzenal = true
             }
 
-            
 
-            var limpezas = contract.cleanings;
-            var proximaLimpeza = limpezas[limpezas.length - 1];
-            var parteDatas = (proximaLimpeza.date.toISOString()).split("T")
+
+            var proximaLimpeza = contract.nextCleaning;
+            var parteDatas = (proximaLimpeza.toISOString()).split("T")
             contract.nextCleaningDate = parteDatas[0]
 
             Employee.find().lean().then((employees) => {
                 for (var i = 0; i < employees.length; i++) {
-                    if (JSON.stringify(employees[i]._id) == JSON.stringify(contract.employee._id)){
+                    if (JSON.stringify(employees[i]._id) == JSON.stringify(contract.employee._id)) {
                         employees[i].selected = true;
                     }
-                        
+
                 }
                 res.render("contract/edit_contract", { contract: contract, employees: employees })
             }).catch((err) => {
@@ -266,11 +272,7 @@ router.post("/update", isLogged, (req, res) => {
             var dataAux = new Date(req.body.expiration);
 
 
-            var limpezas = contract.cleanings;
-            var proxLimpeza = limpezas.pop();
-            proxLimpeza.date = new Date(req.body.nextCleaningDate);
-            proxLimpeza.employee = mongoose.Types.ObjectId(req.body.employee);
-            limpezas.push(proxLimpeza);
+            proxLimpeza = new Date(req.body.nextCleaningDate);
 
             Contract.updateOne({ _id: req.body.id }, {
                 $set:
@@ -280,12 +282,31 @@ router.post("/update", isLogged, (req, res) => {
                     expiration: dataAux,
                     address: newAdress,
                     employee: mongoose.Types.ObjectId(req.body.employee),
-                    cleanings: limpezas
+                    nextCleaning: proxLimpeza
                 }
             }
-            ).lean().then((contract) => {
-                req.flash("success_msg", "Contrato atualizado!");
-                res.redirect("/contract/recovery");
+            ).lean().then((contractUpdate) => {
+                Cleaning.findOne({ contract: req.body.id }).lean().sort({ date: "desc" }).then((cleaning) => {
+                    Cleaning.updateOne({ _id: cleaning._id }, {
+                        $set:
+                        {
+                            date: proxLimpeza,
+                            employee: mongoose.Types.ObjectId(req.body.employee)
+                        }
+                    }).lean().then(() => {
+                        req.flash("success_msg", "Contrato atualizado!");
+                        res.redirect("/contract/recovery");
+                    }).catch((err) => {
+                        req.flash("error_msg", "Falha ao atualizar contrato!");
+                        console.log(err)
+                        res.redirect("/contract/recovery");
+                    })
+                }).catch((err) => {
+                    req.flash("error_msg", "Falha ao atualizar contrato!");
+                    console.log(err)
+                    res.redirect("/contract/recovery");
+                })
+
             }).catch((err) => {
                 req.flash("error_msg", "Falha ao atualizar contrato!");
                 console.log(err)
