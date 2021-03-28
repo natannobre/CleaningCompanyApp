@@ -45,11 +45,21 @@ function mascaraDataBanco(data) {
     return novaData;
 }
 
-function mascaraData(data) {
-    dia = data.getDate()+1;
+function mascaraData(data, val) {
+    dia = data.getDate()+val;
     mes = data.getMonth()+1;
     ano = data.getFullYear();
+    if((dia > 31) || (dia > 28 && mes == 2) || (dia > 30 && mes == 4) || (dia > 30 && mes == 6)  
+       || (dia > 30 && mes == 9) || (dia > 30 && mes == 11)){
+        dia = 1;
+        mes += 1;
+    }
+    if(mes > 12){
+        mes = 1;
+        ano += 1;
+    }
     data = dia + "-" + mes + "-" + ano
+
     partesData = data.split("-")
     var novaData
 
@@ -168,8 +178,8 @@ router.get("/list", (req, res) => {
                 }
             }
             if (incomesSearching.length > 0) {
-                initialDate = mascaraData(dataAux1);
-                finalDate = mascaraData(dataAux2);
+                initialDate = mascaraData(dataAux1, 1);
+                finalDate = mascaraData(dataAux2, 1);
                 res.render("cash_desk/search_cashier",
                     {
                         incomes: incomesSearching,
