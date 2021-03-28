@@ -45,11 +45,11 @@ function mascaraDataBanco(data) {
     return novaData;
 }
 
-function mascaraData(data, val) {
-    dia = data.getDate() + val;
-    mes = data.getMonth() + 1;
+function mascaraData(data) {
+    dia = data.getDate()+1;
+    mes = data.getMonth()+1;
     ano = data.getFullYear();
-    data = dia + "-" + mes + "-" + ano;
+    data = dia + "-" + mes + "-" + ano
     partesData = data.split("-")
     var novaData
 
@@ -149,11 +149,8 @@ router.get("/list", (req, res) => {
             for (const inc of incomes) {
 
                 const dataBanco = mascaraDataBanco(inc.date)
-                const dataInicial = mascaraData(dataAux1, 1)
-                const dataFinal = mascaraData(dataAux2, 1)
-                // console.log(data1+"--"+data2);//comparando as datas
 
-                if ((dataBanco >= dataInicial) && (dataBanco <= dataFinal)) {
+                if ((inc.date >= dataAux1) && (inc.date <= dataAux2)) {
 
 
                     if (inc.type == "1") {
@@ -169,10 +166,10 @@ router.get("/list", (req, res) => {
                     incomesSearching.push(inc)
 
                 }
-                initialDate = dataInicial;
-                finalDate = dataFinal;
             }
             if (incomesSearching.length > 0) {
+                initialDate = mascaraData(dataAux1);
+                finalDate = mascaraData(dataAux2);
                 res.render("cash_desk/search_cashier",
                     {
                         incomes: incomesSearching,

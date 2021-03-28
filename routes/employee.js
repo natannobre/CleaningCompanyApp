@@ -49,11 +49,11 @@ router.post("/add", isLogged, (req, res) =>{
                 })
 
                 newEmployee.save().then(() => {
-                    req.flash("success_msg", "registered");
+                    req.flash("success_msg", "Funcionário cadastrado");
                     res.redirect("/employee/add");
                 }).catch((err)=>{
                     console.log(err);
-                    req.flash("error_msg", "no registered");
+                    req.flash("error_msg", "Erro ao cadastrar o funcionário");
                     res.redirect("/employee/add");
                 })
             }

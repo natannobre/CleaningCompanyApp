@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/contract")
+require("../models/client")
 const Contract = mongoose.model("contract")
 const Client = mongoose.model("client");
 const Employee = mongoose.model("employee");
-const {isLogged} = require("../config/isLogged")
+const { isLogged } = require("../config/isLogged")
 
 function mascaraDePreco(preco) {
     stringPreco = preco.toString().replace('.', ',')
@@ -49,7 +50,7 @@ function mascaraData(data) {
     return novaData
 }
 
-function mascaraDataBanco(data){
+function mascaraDataBanco(data) {
     var dataAux = data.toISOString().split("T");
     var partesData = dataAux[0].split("-");
     var novaData;
@@ -95,22 +96,10 @@ router.post("/add", isLogged, (req, res) => {
     if (erros.length > 0) {
         res.render("contract/add_contract", { erros: erros })
     } else {
-        var cliente = req.body.client
-        var partesCliente = cliente.split("-")
-        var id_cliente = partesCliente[0]
-        var nome_cliente = partesCliente[1] + " " + partesCliente[2];
-
-        var funcionario = req.body.employee;
-        var partesFuncionario = funcionario.split("-");
-
-
-        var employee1 = {
-            employee_id: partesFuncionario[0],
-            employee_name: partesFuncionario[1] + " " + partesFuncionario[2]
-        }
+        
 
         var limpeza = {
-            employee_name: employee1.employee_name,
+            employee: mongoose.Types.ObjectId(req.body.employee),
             date: dataInicial,
             status: false
         }
@@ -127,14 +116,13 @@ router.post("/add", isLogged, (req, res) => {
             city: req.body.city
         }
         const newContract = new Contract({
-            client_id: id_cliente,
-            client_name: nome_cliente,
+            client: mongoose.Types.ObjectId(req.body.client),
+            employee: mongoose.Types.ObjectId(req.body.employee),
             contract_price: req.body.contract_price,
             contract_type: req.body.contract_type,
             expiration: dataAux,
             status: true,
             address: newAdress,
-            employee: employee1,
             cleanings: cleanings
         })
 
@@ -169,27 +157,44 @@ router.get("/recovery", (req, res) => {
 })
 
 router.get("/recovery/search", isLogged, (req, res) => {
-    Contract.find({ client_name: req.query.client_name }).lean().then((contracts) => {
-        if (contracts) {
-            for(var i = 0; i < contracts.length; i++){
-                contracts[i].contract_price = mascaraDePreco(contracts[i].contract_price);
-            }
-            res.render("contract/recovery_contract", { contracts: contracts });
+    if (req.query.client_name.search(" ") < 0) {
+        req.flash("error_msg", "Contrato não encontrado!")
+        res.redirect("/contract/recovery");
+    }
+    var [first_name, last_name] = req.query.client_name.split(" ");
+    Client.findOne({ first_name: first_name, last_name: last_name }).then((client) => {
+        if (client) {
+            Contract.find({ client: client._id }).lean().populate("client").then((contracts) => {
+                if (contracts) {
+                    for (var i = 0; i < contracts.length; i++) {
+                        contracts[i].contract_price = mascaraDePreco(contracts[i].contract_price);
+                    }
+                    res.render("contract/recovery_contract", { contracts: contracts });
+                } else {
+                    req.flash("error_msg", "Contrato não encontrado!")
+                    res.redirect("/contract/recovery");
+                }
+
+
+            }).catch((err) => {
+                console.log(err)
+            })
+
         } else {
             req.flash("error_msg", "Contrato não encontrado!")
-            res.redirect("/home");
+            res.redirect("/contract/recovery");
         }
     }).catch((err) => {
-        console.log(err)
+        console.log(err);
     })
+
 })
 
 router.get("/description/:id", isLogged, (req, res) => {
-    Contract.findOne({ _id: req.params.id }).lean().then((contract) => {
+    Contract.findOne({ _id: req.params.id }).lean().populate("client").populate("employee").then((contract) => {
         if (contract) {
             var auxContr = contract.expiration
             var dataProximaLimpeza = contract.cleanings.pop().date;
-            // var parteDate = (auxContr.toISOString()).split("T");
             
             contract.expiration = mascaraDataBanco(auxContr)
             contract.nextCleaningDate = mascaraDataBanco(dataProximaLimpeza);
@@ -204,7 +209,7 @@ router.get("/description/:id", isLogged, (req, res) => {
 })
 
 router.get("/edit/:id", isLogged, (req, res) => {
-    Contract.findOne({ _id: req.params.id }).lean().then((contract) => {
+    Contract.findOne({ _id: req.params.id }).lean().populate("client").populate("employee").then((contract) => {
         if (contract) {
             var auxContr = contract.expiration
             var parteDate = (auxContr.toISOString()).split("T")
@@ -217,6 +222,8 @@ router.get("/edit/:id", isLogged, (req, res) => {
                 contract.quinzenal = true
             }
 
+            
+
             var limpezas = contract.cleanings;
             var proximaLimpeza = limpezas[limpezas.length - 1];
             var parteDatas = (proximaLimpeza.date.toISOString()).split("T")
@@ -224,8 +231,10 @@ router.get("/edit/:id", isLogged, (req, res) => {
 
             Employee.find().lean().then((employees) => {
                 for (var i = 0; i < employees.length; i++) {
-                    if (employees[i]._id == contract.employee.employee_id)
+                    if (JSON.stringify(employees[i]._id) == JSON.stringify(contract.employee._id)){
                         employees[i].selected = true;
+                    }
+                        
                 }
                 res.render("contract/edit_contract", { contract: contract, employees: employees })
             }).catch((err) => {
@@ -253,21 +262,14 @@ router.post("/update", isLogged, (req, res) => {
                 state: req.body.state,
                 city: req.body.city
             }
-           
+
             var dataAux = new Date(req.body.expiration);
-          
-            var funcionario = req.body.employee;
-            var partesFuncionario = funcionario.split("-");
-            var employee = {
-                employee_id: partesFuncionario[0],
-                employee_name: partesFuncionario[1] + " " + partesFuncionario[2]
-            }
 
 
             var limpezas = contract.cleanings;
             var proxLimpeza = limpezas.pop();
             proxLimpeza.date = new Date(req.body.nextCleaningDate);
-            proxLimpeza.employee_name = employee.employee_name 
+            proxLimpeza.employee = mongoose.Types.ObjectId(req.body.employee);
             limpezas.push(proxLimpeza);
 
             Contract.updateOne({ _id: req.body.id }, {
@@ -277,7 +279,7 @@ router.post("/update", isLogged, (req, res) => {
                     contract_type: req.body.contract_type,
                     expiration: dataAux,
                     address: newAdress,
-                    employee: employee,
+                    employee: mongoose.Types.ObjectId(req.body.employee),
                     cleanings: limpezas
                 }
             }
@@ -298,14 +300,14 @@ router.post("/update", isLogged, (req, res) => {
 
 router.get("/list", isLogged, (req, res) => {
 
-    Contract.find().lean().then((contracts) => {
-        if(contracts){
-            for(var i = 0; i < contracts.length; i++){
+    Contract.find().lean().populate("client").then((contracts) => {
+        if (contracts) {
+            for (var i = 0; i < contracts.length; i++) {
                 contracts[i].contract_price = mascaraDePreco(contracts[i].contract_price);
             }
             res.render("contract/recovery_contract", { contracts: contracts });
         }
-       
+
     }).catch((err) => {
         req.flash("error_msg", "Não pode listar!")
         res.redirect("/home")

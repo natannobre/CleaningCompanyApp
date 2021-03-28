@@ -24,7 +24,7 @@
         <form action="/contract/update" method="POST">
         <div class="mb-3">
             <label for="client_name" class="form-label">Cliente:</label>
-            <input type="text" class="form-control" value="{{contract.client_name}}" name="client_name" id="client_name"
+            <input type="text" class="form-control" value="{{contract.client.first_name}} {{contract.client.last_name}}" name="client_name" id="client_name"
                     aria-describedby="cliente" readonly>
         </div>
         <div class="row g-3 mb-3">
@@ -75,7 +75,7 @@
             <label for="employee" class="form-label">Funcionário</label>
             <select required class="form-select" name="employee" aria-label="Default select example">
             {{#each employees}}
-                <option value="{{_id}}-{{first_name}}-{{last_name}}" 
+                <option value="{{_id}}" 
                     {{#if selected}} selected = "true"
                     {{else}}
                     {{/if}}

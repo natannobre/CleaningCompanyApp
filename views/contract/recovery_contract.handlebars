@@ -48,7 +48,7 @@
     <tbody>
         {{#each contracts}}
         <tr>
-            <td>{{client_name}}</td>
+            <td>{{client.first_name}} {{client.last_name}}</td>
             <td align="center">R$ {{contract_price}}</td>
             <td>{{contract_type}}</td>
             <td align="center">{{address.street}}, {{address.number}}</td>
@@ -79,7 +79,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <h6>Deseja realmente excluir o contrato com {{client_name}} em {{address.neighborhood}} ?</h6>
+                        <h6>Deseja realmente excluir o contrato com {{client.first_name}} {{client.last_name}} em {{address.neighborhood}} ?</h6>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>

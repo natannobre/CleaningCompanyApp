@@ -25,7 +25,7 @@
         <select required class="form-select" name="client" aria-label="Default select example">
             <option disabled="true" selected="true">Selecione um cliente</option>
             {{#each clients}}
-                <option value="{{_id}}-{{first_name}}-{{last_name}}">{{first_name}} {{last_name}}</option>
+                <option value="{{_id}}">{{first_name}} {{last_name}}</option>
             {{else}}
 
             {{/each}}
@@ -62,7 +62,7 @@
             <select required class="form-select" name="employee" aria-label="Default select example">
             <option disabled="true" selected="true">Selecione um funcionário</option>
             {{#each employees}}
-                <option value="{{_id}}-{{first_name}}-{{last_name}}">{{first_name}} {{last_name}}</option>
+                <option value="{{_id}}">{{first_name}} {{last_name}}</option>
             {{else}}
 
             {{/each}}

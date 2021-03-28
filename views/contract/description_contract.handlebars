@@ -21,7 +21,7 @@
         <form>
             <div class="mb-3">
                 <label for="cliente" class="form-label">Cliente:</label>
-                <input type="text" class="form-control" value="{{contract.client_name}}" readonly="true" name="cliente"
+                <input type="text" class="form-control" value="{{contract.client.first_name}} {{contract.client.last_name}}" readonly="true" name="cliente"
                     id="cliente" aria-describedby="cliente">
             </div>
             <div class="row g-3 mb-3">
@@ -45,7 +45,7 @@
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <label for="employee" class="form-label">Funcionário</label>
-                    <input type="text" class="form-control" value="{{contract.employee.employee_name}}" readonly="true"
+                    <input type="text" class="form-control" value="{{contract.employee.first_name}} {{contract.employee.last_name}}" readonly="true"
                         name="employee" id="employee" aria-describedby="contract_price">
                 </div>
                 <div class="col-md-6">

@@ -1,13 +1,27 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+require('./client')
+const Client = mongoose.model("client")
+require('./employee')
+const Employee = mongoose.model("employee");
 
 const Contract = new Schema({
-    client_id: {
-        type: String, 
+    // client_id: {
+    //     type: String, 
+    //     required: true
+    // },
+    // client_name: {
+    //     type: String, 
+    //     required: true
+    // },
+    client: {
+        type: Schema.Types.ObjectId,
+        ref: Client,
         required: true
     },
-    client_name: {
-        type: String, 
+    employee: {
+        type: Schema.Types.ObjectId,
+        ref: Employee,
         required: true
     },    
     contract_price: {
@@ -53,16 +67,16 @@ const Contract = new Schema({
             required: true
         },                           
     },
-    employee:{
-        employee_id: {
-            type: String,
-            required: true
-        },
-        employee_name: {
-            type: String,
-            required: true
-        } 
-    },
+    // employee:{
+    //     employee_id: {
+    //         type: String,
+    //         required: true
+    //     },
+    //     employee_name: {
+    //         type: String,
+    //         required: true
+    //     } 
+    // },
     cleanings:{
         type: Object
     }

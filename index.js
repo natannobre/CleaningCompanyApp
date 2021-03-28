@@ -26,6 +26,13 @@ const {isLogged} = require("./config/isLogged")
 
 const userEmailAdmin = "admin@admin.com";
 
+require("./models/client")
+const Client = mongoose.model("client");
+require("./models/contract")
+const Contract = mongoose.model("contract")
+require("./models/contract")
+const Employee = mongoose.model("employee")
+
 //Configuração do body-parser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json())
@@ -58,6 +65,67 @@ mongoose.connect(db.mongoURI, {
 }).catch((err) => {
     console.log("Erro ao se conectar" + err)
 })
+
+// const novoClient = new Client({
+//     email: "teste@teste.com",
+//     first_name: "Teste",
+//     last_name: "Teste",
+//     ssn: "123456789",
+//     phone: "123456789"
+// })
+
+// novoClient.save().then(() => {
+//     console.log("Cliente teste registrado");
+// }).catch((err)=>{
+//     console.log(err)
+// })
+
+// const newEmployee = new Employee({
+//     user_name: "funcionario1",
+//     password: "funcionario1",
+//     first_name: "funcionario1",
+//     last_name: "funcionario1",
+//     ssn: "funcionario1",
+//     phone: "funcionario1"
+// })
+
+// newEmployee.save().then(() => {
+//     console.log("Funcionario cadastrado");
+// }).catch((err)=>{
+//     console.log(err);
+// })
+
+// const newAdress = {
+//     zipcode: "1",
+//     street: "1",
+//     number: 1,
+//     neighborhood: "1",
+//     state: "1",
+//     city: "1"
+// }
+
+
+// const newContract = new Contract({
+//     client: mongoose.Types.ObjectId("606094a15d76161e6444f005"),
+//     employee: mongoose.Types.ObjectId("606094f499c0ac1eafc3cf40"),
+//     contract_price: 4,
+//     contract_type: "1",
+//     expiration: new Date(),
+//     status: true,
+//     address: newAdress,
+// })
+
+// newContract.save().then(() => {
+//     console.log("Contrato Cadastrado");
+// }).catch((err) => {
+//     console.log(err);
+// })
+
+// Contract.find().lean().populate("client").populate("employee").then((contracts) => {
+//     console.log(contracts);
+// }).catch((err) => {
+//     console.log(err);
+// })
 
 app.use((req, res, next) => {
     res.locals.usuario = req.user || null;
