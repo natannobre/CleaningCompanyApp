@@ -148,9 +148,8 @@ app.use((req, res, next) => {
     })
 
     app.get("/login", (req, res)=>{
-        User.findOne({email: userEmailAdmin}).then((user)=> {
-
-            if(user){
+        User.find().lean().then((user)=> {
+            if(user.length>0){                
                 res.render("login");    
             }else{
                 const newUser = new User({
@@ -160,7 +159,7 @@ app.use((req, res, next) => {
                     password: "admin",
                     last_name: "Administrador",
                     ssn: "Adiministrador",
-                    phone: "Adiministrador"
+                    phone: "(88) 888888888"
                 })
     
                 bcrypt.genSalt(10, (erro, salt)=> {
@@ -171,8 +170,7 @@ app.use((req, res, next) => {
                         }
                         newUser.password = passwordHash
     
-                        newUser.save().then(() => {
-                            console.log("cadastrado")
+                        newUser.save().then(() => {                            
                             res.render("login")
                         }).catch((err)=>{
                             console.log(err);
@@ -182,6 +180,7 @@ app.use((req, res, next) => {
                 })         
             }
         }).catch((err)=> {
+            console.log("erro -->", err)
             res.render("login")
         })
         
@@ -195,6 +194,42 @@ app.use((req, res, next) => {
             failureFlash: true
         })(req, res, next)
     })
+    app.post("/updateUser", isLogged, (req, res) =>{
+        User.find().lean().then((user1)=> {
+            if(user1) {
+                bcrypt.genSalt(10, (erro, salt)=> {
+                    bcrypt.hash(req.body.password, salt, (erro, passwordHash)=>{
+                        if(erro){
+                            req.flash("error_msg", "Houve um erro durante o salvamento do usuario")
+                            res.redirect("/")
+                        }
+                        var newPassword = passwordHash
+                        User.updateOne({email: user1[0].email},{$set: 
+                            {email: req.body.email, 
+                            user_name: req.body.user_name,
+                            first_name: req.body.first_name, 
+                            last_name: req.body.last_name,
+                            password: newPassword,
+                            ssn: req.body.ssn,
+                            phone: req.body.phone,}}
+                            ).lean().then((user)=> {
+                                req.flash("success_msg", "Administrador Atualizado");                        
+                                res.redirect("/logout");
+                            }).catch((err)=> {
+                                req.flash("error_msg", "can't update");
+                                console.log("esse erro: "+err)
+                                res.redirect("/perfil");
+                            })
+                        
+                    })
+                }) 
+                
+            }            
+        }).catch((err)=> {
+            console.log("erro -->", err)
+            res.render("login")
+        })
+    })    
 
     app.get("/home", isLogged, (req, res) => {
         res.render("home");

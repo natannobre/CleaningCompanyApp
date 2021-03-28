@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="card-body bg-info">
-        <form>
+        <form action="/updateUser" method="post">
             <div class="mb-3">
                 <label for="user_name" class="form-label">Nome de Usuário</label>
                 <input type="text" class="form-control" value="{{usuario.user_name}}" name="user_name" id="user_name" required="true"
@@ -21,14 +21,19 @@
                 <label for="first_name" class="form-label">Primeiro Nome</label>
                 <input type="text"  value="{{usuario.first_name}}" class="form-control" name="first_name" id="first_name" required="true">
             </div>
+            
             <div class="mb-3">
                 <label for="last_name" class="form-label">Último Nome</label>
                 <input type="text" class="form-control" value="{{usuario.last_name}}" name="last_name" id="last_name" required="true">
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Último Nome</label>
+                <label for="email" class="form-label">E-mail</label>
                 <input type="email" class="form-control" value="{{usuario.email}}" name="email" id="email" required="true">
-            </div>
+            </div>     
+            <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" class="form-control" name="password" id="password" required="true">
+            </div>                        
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <label for="SSN" class="form-label">SSN</label>
