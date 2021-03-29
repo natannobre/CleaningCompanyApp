@@ -1,4 +1,4 @@
-# CleaningSquadApp
+# CleaningCompanyApp
 Web Site developed for a cleaning company to schedule their services.
 
 Documento do Software CleaningCompanyApp
