@@ -112,7 +112,7 @@ router.get("/edit/:id", isLogged, (req, res) => {
 })
 
 router.post("/update", isLogged, (req, res) => {
-    console.log("Chegou aqyu");
+    
     Employee.updateOne({_id: req.body.id}, {$set:
     {user_name: req.body.user_name, 
      password: req.body.password, 

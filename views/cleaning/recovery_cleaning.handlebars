@@ -1,0 +1,124 @@
+<script>
+    var elementoAtivo = document.getElementsByClassName("active");
+    elementoAtivo[0].classList.remove('active');
+    var elemento = document.getElementById("searchCleaning");
+    elemento.classList.add("active");
+</script>
+
+<div class="card">
+    <div class="card-header text-white" style="background-color:lightslategray">
+        <div class="row g-3">
+            <div class="col-1">
+                <img class="rounded mx-auto d-block" src="/img/search-client.png" width="60px" heigth="60px" alt="">
+            </div>
+            <div class="col-11 mt-4">
+                <h1>Buscar Limpezas</h1>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form action="/cleaning/recovery/search" method="GET">
+            <div class="row g-3">
+                <div class="col-sm-5">
+                    <input type="text" name="name" class="form-control"
+                        placeholder="Digite o nome para buscar as limpezas">
+                </div>
+                <div class="col-sm-2">
+                    <select required class="form-select" name="type" aria-label="Default select example">
+                        <option value="client">Cliente</option>
+                        <option value="employee">Funcionário</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="submit"> <img src="/img/search3.png" alt=""> Buscar
+                        Limpezas</button>
+                </div>
+                <div class="col-auto">
+                    <a href="/cleaning/list"><button class="btn btn-primary" type="button"> <img src="/img/list2.png"
+                                alt=""> Listar
+                            Todos</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table table-hover table-bordered table-primary mt-4">
+    <thead>
+        <tr align="center">
+            <th scope="col">Data</th>
+            <th scope="col">Cliente</th>
+            <th scope="col">Endereço</th>
+            <th scope="col">Funcionário</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cleanings}}
+        <tr>
+            <td>{{date}}</td>
+            <td>{{client.first_name}} {{client.last_name}}</td>
+            <td>{{contract.address.street}}, {{contract.address.number}}</td>
+            <td>{{employee.first_name}} {{employee.last_name}}</td>
+            <td align="center">
+                {{#if status}}
+                Concluída
+                {{else}}
+                Pendente
+                {{/if}}
+            </td>
+            <td align="center">
+                <form action="">
+                    <input type="hidden" name="id" value="{{_id}}">
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="/cleaning/description/{{_id}}"><button class="btn btn-primary btn-sm" type="button">
+                                <img src="/img/info.png" width="16px" height="16px" alt="">
+                                Info</button></a>
+                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#remarcarLimpeza-{{_id}}" type="button"
+                            {{#if status}}
+                                disabled="true"
+                            {{else}}
+                            {{/if}}
+                            > 
+                            <img src="/img/pencil.png"
+                                width="18px" height="18px" alt=""> Remarcar</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <!-- Modal -->
+        <div class="modal fade" id="remarcarLimpeza-{{_id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Remarcar Limpeza</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Seleciona a nova Data da Limpeza</h6>
+                    </div>
+                    <form action="/cleaning/reschedule" method="POST">
+
+                        <div class="col-md-7 mb-4 mx-3">
+                            <input type="date" name="date" id="date" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> <img
+                                    src="/img/cancel2.png" width="22px" height="22px"> Cancelar</button>
+                            <input type="hidden" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-success"> <img src="/img/check.png" width="22px"
+                                    height="22px" alt=""> Confirmar</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{else}}
+
+        {{/each}}
+
+    </tbody>
+</table>

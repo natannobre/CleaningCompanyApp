@@ -5,33 +5,6 @@ require("../models/income")
 const Income = mongoose.model("income")
 const {isLogged} = require("../config/isLogged")
 
-
-function mascaraData(data) {
-    dia = data.getDate()+1;
-    mes = data.getMonth()+1;
-    ano = data.getFullYear();
-    data = dia + "-" + mes + "-" + ano;
-    partesData = data.split("-")
-    var novaData
-
-    if (partesData[0].length == 1) {
-        novaData = "0" + partesData[0]
-    } else {
-        novaData = partesData[0]
-    }
-
-    novaData = novaData + "/"
-
-    if (partesData[1].length == 1) {
-        novaData = novaData + "0" + partesData[1]
-    } else {
-        novaData = novaData + partesData[1]
-    }
-
-    novaData = novaData + "/" + partesData[2]
-    return novaData
-}
-
 router.get("/add", isLogged, (req, res) => {
     res.render("income/add_income")
 })

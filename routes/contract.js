@@ -9,76 +9,12 @@ const Contract = mongoose.model("contract")
 const Client = mongoose.model("client");
 const Employee = mongoose.model("employee");
 const Cleaning = mongoose.model("cleaning");
-const { isLogged } = require("../config/isLogged")
-
-function mascaraDePreco(preco) {
-    stringPreco = preco.toString().replace('.', ',')
-    var i = stringPreco.indexOf(",")
-    tamanho = stringPreco.length
-    var substringPreco
-    if (i == -1) {
-        stringPreco = stringPreco.concat(",00")
-    } else {
-        substringPreco = stringPreco.substr(i + 1, tamanho)
-        if (substringPreco.length < 2) {
-            stringPreco = stringPreco.concat("0")
-        }
-    }
-    return stringPreco
-}
-
-function mascaraData(data) {
-    dia = data.getDate();
-    mes = data.getMonth() + 1;
-    ano = data.getFullYear();
-    data = dia + "-" + mes + "-" + ano;
-    partesData = data.split("-")
-    var novaData
-
-    if (partesData[0].length == 1) {
-        novaData = "0" + partesData[0]
-    } else {
-        novaData = partesData[0]
-    }
-
-    novaData = novaData + "/"
-
-    if (partesData[1].length == 1) {
-        novaData = novaData + "0" + partesData[1]
-    } else {
-        novaData = novaData + partesData[1]
-    }
-
-    novaData = novaData + "/" + partesData[2]
-    return novaData
-}
-
-function mascaraDataBanco(data) {
-    var dataAux = data.toISOString().split("T");
-    var partesData = dataAux[0].split("-");
-    var novaData;
-
-    if (partesData[2].length == 1) {
-        novaData = "0" + partesData[2]
-    } else {
-        novaData = partesData[2]
-    }
-
-    novaData = novaData + "/"
-
-    if (partesData[1].length == 1) {
-        novaData = novaData + "0" + partesData[1]
-    } else {
-        novaData = novaData + partesData[1]
-    }
-
-    novaData = novaData + "/" + partesData[0]
-    return novaData;
-}
+const { isLogged } = require("../config/isLogged");
+const mascaraDataBanco = require("../utils/mascaraData").mascaraDataBanco;
+const mascaraDePreco = require("../utils/mascaraPreco").mascaraDePreco;
 
 router.post("/add", isLogged, (req, res) => {
     var erros = [];
-
     // if(!req.body.contract_price || typeof req.body.contract_price ==undefined || req.body.contract_price ==null){
     //     erros.push({texto: "Preço inválido"})
     // }    
@@ -90,8 +26,6 @@ router.post("/add", isLogged, (req, res) => {
     // if(!req.body.validity || typeof req.body.e ==undefined || req.body.validity ==null){
     //     erros.push({texto: "Validade inválida"})
     // }    
-
-
 
     var dataAux = new Date(req.body.expiration)
     var dataInicial = new Date(req.body.initialDate);
@@ -126,6 +60,7 @@ router.post("/add", isLogged, (req, res) => {
                 date: dataInicial,
                 employee: mongoose.Types.ObjectId(req.body.employee),
                 contract: mongoose.Types.ObjectId(contract._id),
+                client: mongoose.Types.ObjectId(req.body.client),    
             })
             newCleaning.save().then(() => {
                 req.flash("success_msg", "Contrato registrado com sucesso!");
@@ -159,7 +94,7 @@ router.get("/add", isLogged, (req, res) => {
     })
 })
 
-router.get("/recovery", (req, res) => {
+router.get("/recovery", isLogged, (req, res) => {
     res.render("contract/recovery_contract");
 })
 

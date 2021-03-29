@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose');
 require("../models/client")
 const Client = mongoose.model("client");
-const {isLogged} = require("../config/isLogged")
+const {isLogged} = require("../config/isLogged");
 
 router.get("/add", isLogged, (req, res) => {
     res.render("client/add_client");

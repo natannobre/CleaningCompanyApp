@@ -1,0 +1,92 @@
+<script>
+  var elementoAtivo = document.getElementsByClassName("active");
+  elementoAtivo[0].classList.remove('active');
+  var elemento = document.getElementById("dailyCleaning");
+  elemento.classList.add("active");
+</script>
+
+<div class="card">
+
+    <div class="card-header text-white" style="background-color:lightslategray">
+        <div class="row g-3">
+            <div class="col-1">
+                <img class="rounded mx-auto d-block" src="/img/info2.png" width="60px" heigth="60px" alt="">
+            </div>
+            <div class="col-11 mt-4">
+                <h1>Informações da Limpeza</h1>
+            </div>
+        </div>
+    </div>
+    <div class="card-body bg-info">
+        <form>
+            <div class="mb-3">
+                <label for="cliente" class="form-label">Cliente:</label>
+                <input type="text" class="form-control" value="{{cleaning.client.first_name}} {{cleaning.client.last_name}}" readonly="true" name="cliente"
+                    id="cliente" aria-describedby="cliente">
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label><br>
+                    <input type="text" class="form-control" readonly="true" name="status" id="status" 
+                        {{#if status}}
+                        value="Concluída"
+                        {{else}}
+                        value="Pendente"
+                        {{/if}}>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="employee" class="form-label">Funcionário</label>
+                    <input type="text" class="form-control" value="{{cleaning.employee.first_name}} {{cleaning.employee.last_name}}" readonly="true"
+                        name="employee" id="employee" aria-describedby="contract_price">
+                </div>
+                <div class="col-md-6">
+                    <label for="initialDate" class="form-label">Data da Limpeza</label>
+                    <input type="text" class="form-control" value="{{cleaning.date}}" readonly="true"
+                        name="initialDate" id="initialDate" aria-describedby="expiration">
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="mb-3 col-10">
+                    <label for="street" class="form-label">Rua</label>
+                    <input type="text" class="form-control" name="street" id="street" readonly="true" required="true"
+                        value="{{cleaning.contract.address.street}}">
+                </div>
+                <div class="col-md-2">
+                    <label for="number" class="form-label">Número</label>
+                    <input type="text" class="form-control" name="number" id="number" readonly="true" required="true"
+                        value="{{cleaning.contract.address.number}}">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-8 mb-3">
+                    <label for="neighborhood" class="form-label">Bairro</label>
+                    <input type="text" class="form-control" name="neighborhood" id="neighborhood" readonly="true"
+                        required="true" value="{{cleaning.contract.address.neighborhood}}">
+                </div>
+                <div class="col-md-4">
+                    <label for="zipcode" class="form-label">Código Postal</label>
+                    <input type="text" class="form-control" name="zipcode" id="zipcode" readonly="true" required="true"
+                        value="{{cleaning.contract.address.zipcode}}">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-8 mb-3">
+                    <label for="city" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" name="city" id="city" readonly="true" required="true"
+                        value="{{cleaning.contract.address.city}}">
+                </div>
+                <div class="col-md-4">
+                    <label for="state" class="form-label">Estado</label>
+                    <input type="text" class="form-control" name="state" id="state" readonly="true" required="true"
+                        value="{{cleaning.contract.address.state}}">
+                </div>
+            </div>
+            <div align="center">
+                <button type="button" class="btn btn-primary"
+                    onclick="location.href = document.referrer;">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>
