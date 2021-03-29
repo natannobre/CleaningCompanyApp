@@ -183,11 +183,11 @@ router.post("/update", isLogged, (req, res) => {
             var date = new Date(cleaning.date);
             var proximoDia = date.getDate();
 
-            if (cleaning.contract.contract_type == "semanal") {
+            if (cleaning.contract.contract_type == "Semanal") {
                 proximoDia = proximoDia + 7
-            } else if (cleaning.contract.contract_type == "quinzenal") {
+            } else if (cleaning.contract.contract_type == "Quinzenal") {
                 proximoDia = proximoDia + 15
-            } else if (cleaning.contract.contract_type == "mensal") {
+            } else if (cleaning.contract.contract_type == "Mensal") {
                 proximoDia = proximoDia + 30
             }
             date.setDate(proximoDia);

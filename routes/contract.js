@@ -156,11 +156,11 @@ router.get("/edit/:id", isLogged, (req, res) => {
             var auxContr = contract.expiration
             var parteDate = (auxContr.toISOString()).split("T")
             contract.expiration = parteDate[0]
-            if (contract.contract_type == "mensal") {
+            if (contract.contract_type == "Mensal") {
                 contract.mensal = true
-            } else if (contract.contract_type == "semanal") {
+            } else if (contract.contract_type == "Semanal") {
                 contract.semanal = true
-            } else if (contract.contract_type == "quinzenal") {
+            } else if (contract.contract_type == "Quinzenal") {
                 contract.quinzenal = true
             }
 

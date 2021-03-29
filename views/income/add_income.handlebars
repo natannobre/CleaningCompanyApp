@@ -23,7 +23,7 @@
     <form action="add" method="post">
       <div class="mb-3">
         <label for="value" class="form-label">Valor em R$</label>
-        <input type="number" step="0.01" min="0.01" name="value" class="form-control" id="value" id="name" placeholder="120,00 R$">
+        <input type="number" step="0.01" min="0.01" name="value" class="form-control" id="value" required="true" placeholder="120,00 R$">
       </div>
       <div class="mb-3">
         <label for="type" class="form-label">Tipo da Receita</label>
@@ -34,7 +34,7 @@
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Descrição</label>
-        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+        <textarea class="form-control" name="description" id="description" required="true" rows="3"></textarea>
       </div>
 
       <div align="center" class="mt-3">
