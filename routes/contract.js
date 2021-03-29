@@ -15,20 +15,24 @@ const mascaraDePreco = require("../utils/mascaraPreco").mascaraDePreco;
 
 router.post("/add", isLogged, (req, res) => {
     var erros = [];
-    // if(!req.body.contract_price || typeof req.body.contract_price ==undefined || req.body.contract_price ==null){
-    //     erros.push({texto: "Preço inválido"})
-    // }    
+    if(!req.body.client || typeof req.body.client ==undefined || req.body.client ==null){
+        erros.push({texto: "Cliente inválido"})
+    }    
 
-    // if(!req.body.contract_type || typeof req.body.contract_type ==undefined || req.body.contract_type ==null){
-    //     erros.push({texto: "Tipo de contrato inválido"})
-    // }    
+    if(!req.body.employee || typeof req.body.employee ==undefined || req.body.employee ==null){
+        erros.push({texto: "Funcionário de contrato inválido"})
+    }    
 
-    // if(!req.body.validity || typeof req.body.e ==undefined || req.body.validity ==null){
-    //     erros.push({texto: "Validade inválida"})
-    // }    
+    if(!req.body.contract_price || typeof req.body.contract_price ==undefined || req.body.contract_price ==null){
+        erros.push({texto: "Preço inválida"})
+    }    
 
     var dataAux = new Date(req.body.expiration)
     var dataInicial = new Date(req.body.initialDate);
+
+    if(dataAux < dataInicial){
+        erros.push({texto: "Data da primeira limpeza maior que a expiração do contrato"})
+    }
 
     if (erros.length > 0) {
         res.render("contract/add_contract", { erros: erros })

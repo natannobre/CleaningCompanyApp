@@ -152,29 +152,49 @@ router.get("/description/:id", isLogged, (req, res) => {
 router.post("/reschedule", isLogged, (req, res) => {
 
     var dataAux = new Date(req.body.date);
-    Cleaning.findOneAndUpdate({_id: req.body.id}, {$set:
-    {
-        date: dataAux
-    }}).lean().populate("contract").then((cleaning) => {
-        Contract.updateOne({_id: cleaning.contract._id}, {$set:
-            {nextCleaning: dataAux}}
-            ).lean().then(() => {
-    
-                req.flash("success_msg", "Limpeza remarcada!");
-                res.redirect("/cleaning/recovery");
-    
-            }).catch((err)=> {
+    Cleaning.findOne({ _id: req.body.id }).lean().populate("contract").then((cleaning) => {
+
+        var dateExpiration = new Date(cleaning.contract.expiration);
+
+        if (dataAux > dateExpiration) {
+            req.flash("error_msg", "Limpeza não remarcada, data fora do contrato");
+            res.redirect("/cleaning/dailyCleaning");
+        } else {
+            Cleaning.updateOne({ _id: req.body.id }, {
+                $set: {
+                    date: dataAux
+                }
+            }).lean().then(() => {
+                Contract.updateOne({ _id: cleaning.contract._id }, {
+                    $set:
+                        { nextCleaning: dataAux }
+                }
+                ).lean().then(() => {
+
+                    req.flash("success_msg", "Limpeza remarcada!");
+                    res.redirect("/cleaning/recovery");
+
+                }).catch((err) => {
+                    console.log(err);
+                    req.flash("error_msg", "Limpeza não remarcada!!");
+                    res.redirect("/cleaning/recovery");
+                })
+            }).catch((err) => {
                 console.log(err);
                 req.flash("error_msg", "Limpeza não remarcada!!");
                 res.redirect("/cleaning/recovery");
             })
+        }
+
+
+
     }).catch((err) => {
         console.log(err);
         req.flash("error_msg", "Limpeza não remarcada!!");
         res.redirect("/cleaning/recovery");
     })
-   
-    
+
+
 })
 
 router.post("/update", isLogged, (req, res) => {
@@ -191,43 +211,67 @@ router.post("/update", isLogged, (req, res) => {
                 proximoDia = proximoDia + 30
             }
             date.setDate(proximoDia);
-            const newCleaning = new Cleaning({
-                date: date,
-                employee: mongoose.Types.ObjectId(cleaning.contract.employee),
-                contract: mongoose.Types.ObjectId(cleaning.contract._id),
-                client: mongoose.Types.ObjectId(cleaning.contract.client)
-            })
+            var dateExpiration = new Date(cleaning.contract.expiration);
 
-            newCleaning.save().then(() => {
-
-                Cleaning.updateOne({_id: req.body.id}, {$set:
-                {status: true}}
+            if (date > dateExpiration) {
+                Cleaning.updateOne({ _id: req.body.id }, {
+                    $set:
+                        { status: true }
+                }
                 ).lean().then(() => {
+                    req.flash("success_msg", "Limpeza concluída e nova limpeza não marcada, contrato expirando");
+                    res.redirect("/cleaning/dailyCleaning");
+                }).catch((err) => {
+                    console.log(err);
+                    req.flash("error_msg", "Erro ao concluir a limpeza");
+                    res.redirect("/cleaning/dailyCleaning");
+                })
 
-                    Contract.updateOne({_id: cleaning.contract._id}, {$set:
-                        {nextCleaning: date}}
+            } else {
+                const newCleaning = new Cleaning({
+                    date: date,
+                    employee: mongoose.Types.ObjectId(cleaning.contract.employee),
+                    contract: mongoose.Types.ObjectId(cleaning.contract._id),
+                    client: mongoose.Types.ObjectId(cleaning.contract.client)
+                })
+
+                newCleaning.save().then(() => {
+
+                    Cleaning.updateOne({ _id: req.body.id }, {
+                        $set:
+                            { status: true }
+                    }
+                    ).lean().then(() => {
+
+                        Contract.updateOne({ _id: cleaning.contract._id }, {
+                            $set:
+                                { nextCleaning: date }
+                        }
                         ).lean().then(() => {
-        
+
                             req.flash("success_msg", "Limpeza concluída!");
                             res.redirect("/cleaning/dailyCleaning");
-        
-                        }).catch((err)=> {
+
+                        }).catch((err) => {
                             console.log(err);
                             req.flash("error_msg", "Não concluído 222!");
                             res.redirect("/cleaning/dailyCleaning");
                         })
 
-                }).catch((err)=> {
+                    }).catch((err) => {
+                        console.log(err);
+                        req.flash("error_msg", "Não concluído!");
+                        res.redirect("/cleaning/dailyCleaning");
+                    })
+
+                }).catch((err) => {
                     console.log(err);
                     req.flash("error_msg", "Não concluído!");
                     res.redirect("/cleaning/dailyCleaning");
                 })
+            }
 
-            }).catch((err) => {
-                console.log(err);
-                req.flash("error_msg", "Não concluído!");
-                res.redirect("/cleaning/dailyCleaning");
-            })
+
         } else {
             req.flash("error_msg", "Não concluído!");
             res.redirect("/cleaning/dailyCleaning");

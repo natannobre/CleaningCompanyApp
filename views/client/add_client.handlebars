@@ -5,6 +5,13 @@
   elemento.classList.add("active");
 </script>
 
+{{#each erros}}
+  <div class="alert alert-danger">
+    <h5>{{texto}}</h5>
+  </div>
+{{else}}
+
+{{/each}}
 
 <div class="card">
 
@@ -22,8 +29,7 @@
     <form method="post" action="add">
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" id="email" required="true"
-          aria-describedby="email">
+        <input type="email" class="form-control" name="email" id="email" required="true" aria-describedby="email">
       </div>
       <div class="mb-3">
         <label for="first_name" class="form-label">Primeiro Nome</label>
